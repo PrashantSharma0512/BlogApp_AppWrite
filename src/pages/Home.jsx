@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import appwriteService from '../appWrite/configDB'
 import { Container, PostCard } from '../component'
+import authSlice from '../store/authSlice';
 
 function Home() {
     const [post, setPost] = useState([]);
     useEffect(() => {
         appwriteService.getPost().then((post) => {
-                if (post) {
-                    setPost(post.documents)
-                }
-            })
-        
+            if (post) {
+                setPost(post.documents)
+            }
+        })
+
     }, [])
 
 
