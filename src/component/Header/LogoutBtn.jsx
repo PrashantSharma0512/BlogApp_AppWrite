@@ -10,10 +10,10 @@ const LogoutBtn = () => {
       dispatch(logout())
     })
   }
-  console.log(typeof logoutHandler);
+
 
   return (
-    <button className='p-4 bg-red-700 border-blue-600-1'
+    <button className='p-2 text-white'
       onClick={logoutHandler}>LogoutBtn</button>
   )
 }
