@@ -6,11 +6,11 @@ const Input = React.forwardRef(({
     className = '',
     ...props
 }, ref) => {
-    const Id = useId()
+    const id = useId()
     return (
         <div className='w-full'>
             {label && <label className='block mb-1'
-                htmlFor={Id}
+                htmlFor={id}
 
             >{label}</label>}
 
@@ -19,7 +19,7 @@ const Input = React.forwardRef(({
                 className={`px-3 py-2 rouunded-lg bg-white text-black outline-none focus:bg-gray-50 duration-200 border-gray-200 w-full ${className}`}
                 ref={ref}
                 {...props}
-                id={Id}
+                id={id}
             />
         </div>
     )

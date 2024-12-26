@@ -4,20 +4,25 @@ import { Button, Input, RTE, Select } from '../index'
 import appwriteService from '../../appWrite/configDB'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+
 function PostForm({ post }) {
   const { register, handleSubmit, watch, control, setValue, getValues } = useForm({
     defaultValues: {
       title: post?.title || '',
-      slug: post?.slug || '',
+      slug: post?.$id || '',
       content: post?.content || '',
       status: post?.status || 'active',
     }
   })
+  console.log("post", post);
+
   const navigate = useNavigate()
   const userData = useSelector((state) => state.auth.userData)
+  // on handle submit function
   const submit = async (data) => {
+
     if (post) {
-      const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null
+      const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
       if (file) {
         appwriteService.deleteFile(post.featuredImage)
       }
@@ -30,7 +35,11 @@ function PostForm({ post }) {
       }
     } else {
       const file = await appwriteService.uploadFile(data.image[0])
+      
+console.log(file);
+
       if (file) {
+        console.log('inside if condition');
         const fileId = file.$id
         data.featureImage = fileId
         const dbpost = await appwriteService.createPost({
@@ -46,21 +55,23 @@ function PostForm({ post }) {
 
   const slugTransform = useCallback(
     (value) => {
-      return value
-        .trim()
-        .lowerCase()
-        .replace(/^[a-zA-Z\d\s]/g, '-')
-        .replace(/\s/g, '-')
+      if (value && typeof value === 'string') {
+        return value
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-zA-Z\d\s]/g, '-')
+          .replace(/\s/g, '-')
+      }
       return ''
     }, [])
   useEffect(() => {
-    const Subscription = watch((value, { name }) => {
+    const subscription = watch((value, { name }) => {
       if (name === 'title') {
         setValue('slug', slugTransform(value.title, { shouldValidate: true }))
       }
     })
     return () => {
-      Subscription.unsubscribe()
+      subscription.unsubscribe()
     }
   }, [watch, slugTransform, setValue])
 
@@ -109,7 +120,7 @@ function PostForm({ post }) {
           className="mb-4"
           {...register("status", { required: true })}
         />
-        <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full border  bg-red-700">
+        <Button type="submit" bgColor={post ? "bg-green-500" : "bg-red-700"} className="w-full border  ">
           {post ? "Update" : "Submit"}
         </Button>
       </div>

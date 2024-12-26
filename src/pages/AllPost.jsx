@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import appwriteService from '../appWrite/configDB'
 import { Container, PostCard } from '../component/index'
-function AllPost() {
 
-    
+function AllPost() {
     const [posts, setPosts] = useState([])
-    useEffect(() => { }, [])
-    appwriteService.getPostList([]).then((posts) => {
-        if (posts) {
-            setPosts(posts.documents)
-        }
-    })
+
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try {
+                const posts = await appwriteService.getPostList([]);
+                console.log(posts);
+                if (posts) {
+                    setPosts(posts.documents);
+                }
+            } catch (error) {
+                console.error("Failed to fetch posts:", error);
+            }
+        };
+
+        fetchPosts();
+    }, []);
+
     return (
         <div className='w-full py-8'>
             <Container>

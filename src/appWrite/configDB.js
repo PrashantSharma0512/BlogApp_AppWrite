@@ -26,7 +26,7 @@ export class Service {
                     userId,
                 },
             )
-            
+
         } catch (error) {
             throw error;
         }
@@ -72,55 +72,84 @@ export class Service {
 
         } catch (error) {
             console.log("appwrite::getpost:: error", error);
+            return false;
         }
     }
-    async getPostList(query = [Query.equal("status", "active")]) {
+    async getPostList(queries = [Query.equal("status", "active")]) {
         try {
-            return await this.databases.listDocuments(
+            // Validate that collection and database IDs are set
+            if (!config.appwriteDatabaseId || !config.appwriteCollectionId) {
+                throw new Error("Database ID or Collection ID is missing in config.");
+            }
+
+            // Ensure queries is an array
+            if (!Array.isArray(queries)) {
+                queries = [queries];
+            }
+
+            // Fetch documents
+            const response = await this.databases.listDocuments(
                 config.appwriteDatabaseId,
                 config.appwriteCollectionId,
-                query,
-            )
+                queries
+            );
+
+            console.log("getPostList response:", response);
+            return response;
         } catch (error) {
-            console.log("appwrite :: getList:: error", error);
+            console.error("appwrite::getPostList:: error", error.message || error);
+            return false;
         }
     }
 
+
+
     // Upload Files and delete file
     async uploadFile(file) {
+        if (!file) {
+            throw new Error("File is required.");
+        }
+
         try {
             return await this.bucket.createFile(
                 config.appwriteBucketId,
                 ID.unique(),
-                file,
+                file
             );
         } catch (error) {
-            console.log("appwrite :: upload file:: error", error);
-        }
-    }
-    async deleteFile(fileId) {
-        try {
-            await this.bucket.deleteFile(
-                config.appwriteBucketId,
-                fileId,
-            )
-            return true
-        } catch (error) {
-            console.log("appwrite::deletefile:: error", error);
+            console.error("appwrite::uploadFile::error", error);
             return false;
         }
     }
-    getPreview(fileId) {
-        return this.bucket.getFilePreview(
-            config.appwriteBucketId,
-            fileId,
-        )
+
+    async deleteFile(fileId) {
+        if (!fileId) {
+            throw new Error("File ID is required.");
+        }
+
+        try {
+            await this.bucket.deleteFile(config.appwriteBucketId, fileId);
+            return true;
+        } catch (error) {
+            console.error("appwrite::deleteFile::error", error);
+            return false;
+        }
     }
+
+    getPreview(fileId) {
+        if (!fileId) {
+            throw new Error("File ID is required.");
+        }
+
+        return this.bucket.getFilePreview(config.appwriteBucketId, fileId);
+    }
+
     getDownload(fileId) {
-        return this.bucket.getFileDownload(
-            config.appwriteBucketId,
-            fileId,
-        );
+        if (!fileId) {
+            throw new Error("File ID is required.");
+        }
+
+        return this.bucket.getFileDownload(config.appwriteBucketId, fileId);
     }
 }
 

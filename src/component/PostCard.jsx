@@ -2,6 +2,10 @@ import React from 'react'
 import appwriteService from '../appWrite/configDB'
 import { Link } from 'react-router-dom'
 const PostCard = ({ $id, title, featuredImage }) => {
+  console.log("id",$id);
+  console.log("featured image", featuredImage)
+  console.log("title", title)
+  
   return (
     <Link to={`/post/${$id}`}>
       <div className='w-full bg-gray-100 rounded-xl p-4'>

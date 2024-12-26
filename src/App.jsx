@@ -5,6 +5,7 @@ import AuthServices from './appWrite/auth'
 import { login, logout } from './store/authSlice'
 import { Footer, Header } from './component/index'
 import { Outlet } from 'react-router-dom'
+import Loader from './loader/Loader'
 
 function App() {
   const [loading, setloading] = useState(true)
@@ -35,7 +36,11 @@ function App() {
       </div>
     </div>
   ) : (
-    <div className='flex justify-center items-center text-5xl text-blue-700'>loading....</div>
+    // <div className='flex w-screen h-screen justify-center items-center relative text-blue-600 font-bold'>
+    //   <div className='w-24 h-24  border-t-blue-700 rounded-full border-4 animate-spin absolute'></div>
+    //   Loading...
+    // </div>
+    <Loader/>
   )
 }
 
