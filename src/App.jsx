@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import './App.css'
+
 import { useDispatch } from 'react-redux'
 import AuthServices from './appWrite/auth'
 import { login, logout } from './store/authSlice'
@@ -36,11 +36,11 @@ function App() {
       </div>
     </div>
   ) : (
-    // <div className='flex w-screen h-screen justify-center items-center relative text-blue-600 font-bold'>
-    //   <div className='w-24 h-24  border-t-blue-700 rounded-full border-4 animate-spin absolute'></div>
-    //   Loading...
-    // </div>
-    <Loader/>
+    <div className='flex w-screen h-screen justify-center items-center relative text-blue-600 font-bold'><div>
+    </div>
+
+    </div>
+    // <Loader/>
   )
 }
 

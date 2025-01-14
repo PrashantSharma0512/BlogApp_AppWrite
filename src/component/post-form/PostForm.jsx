@@ -19,7 +19,7 @@ function PostForm({ post }) {
   const navigate = useNavigate()
   const userData = useSelector((state) => state.auth.userData)
   // on handle submit function
-  const submit = async (data) => {
+  const submit = async (data) => {1
 
     if (post) {
       const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
@@ -28,24 +28,28 @@ function PostForm({ post }) {
       }
       const dbpost = await appwriteService.updatePost(post.$id, {
         ...data,
-        featureImage: file ? file.$id : undefined,
+        featuredImage: file ? file.$id : undefined,
       })
       if (dbpost) {
         navigate(`/post/${dbpost.$id}`)
       }
     } else {
       const file = await appwriteService.uploadFile(data.image[0])
-      
-console.log(file);
-
+      console.log("file",file);
       if (file) {
         console.log('inside if condition');
         const fileId = file.$id
-        data.featureImage = fileId
+        data.featuredImage = fileId
+        console.log("data",data);
+        console.log("userData",userData);
+        
+        
         const dbpost = await appwriteService.createPost({
           ...data,
           userId: userData.$id,
         })
+        console.log(dbpost);
+        
         if (dbpost) {
           navigate(`/post/${dbpost.$id}`)
         }
@@ -120,7 +124,7 @@ console.log(file);
           className="mb-4"
           {...register("status", { required: true })}
         />
-        <Button type="submit" bgColor={post ? "bg-green-500" : "bg-red-700"} className="w-full border  ">
+        <Button type="submit" bgColor={post ? "bg-green-500" : "bg-red-700"} className="w-full border ">
           {post ? "Update" : "Submit"}
         </Button>
       </div>

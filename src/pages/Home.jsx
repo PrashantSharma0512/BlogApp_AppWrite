@@ -10,8 +10,7 @@ function Home() {
             if (posts) {
                 setPost(posts.documents)
             }
-        })
-        
+        })  
     }, [])
     console.log("post length",post.length);
     if (post.length === 0) {
