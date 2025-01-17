@@ -10,9 +10,10 @@ const Login = () => {
     const navigate = useNavigate()
     const { register, handleSubmit } = useForm()
     const [error, setError] = useState("")
-
+    const [loading, setLoading] = useState(false)
     const login = async (data) => {
-        setError("");
+        setError("")
+        setLoading(true)
         try {
             const session = await authService.login(data)
             if (session) {
@@ -21,15 +22,14 @@ const Login = () => {
                     dispatch(authLogin(userData))
                 }
                 navigate('/')
-            } else {
-
             }
+            setLoading(false)
         } catch (error) {
             setError(error.message)
         }
     }
     return (
-        <div className="flex items-center justify-center w-full">
+        <div className="flex items-center justify-center w-full ">
             <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
                 <div className="mb-2 flex justify-center">
                     <span className="inline-block w-full max-w-[100px]">
@@ -47,34 +47,40 @@ const Login = () => {
                     </Link>
                 </p>
                 {error && <p className="text-red-800 mt-8 text-center">{error}</p>}
-                <form onSubmit={handleSubmit(login)} 
-                className="mt-8">
+                <form onSubmit={handleSubmit(login)}
+                    className="mt-8">
                     <div className="space-y-5">
                         <Input
-                        label='Email: '
-                        placeholder='Enter Your Email'
-                        type='email'
-                        {...register("email",{
-                            required:true,
-                            validate:{
-                                matchPattern:(val)=>/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(val) || "Email address must be a valid address"
-                            }
-                        })}
+                            label='Email: '
+                            placeholder='Enter Your Email'
+                            type='email'
+                            {...register("email", {
+                                required: true,
+                                validate: {
+                                    matchPattern: (val) => /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(val) || "Email address must be a valid address"
+                                }
+                            })}
                         />
-                        <Input 
-                        label='Password'
-                        type='password'
-                        placeholder='Enter your password'
-                        {...register("password",{
-                            required:true,
+                        <Input
+                            label='Password'
+                            type='password'
+                            placeholder='Enter your password'
+                            {...register("password", {
+                                required: true,
 
-                        })}
+                            })}
                         />
-                        <Button
-                        children="Sign In"
-                        type="submit"
-                        className="w-full"
-                        />
+                        {
+                            loading ?
+                                <h1>Loading...</h1>
+                                :
+                                <Button
+                                    children="Sign In"
+                                    type="submit"
+                                    className="w-full"
+                                />
+                        }
+
                     </div>
 
                 </form>

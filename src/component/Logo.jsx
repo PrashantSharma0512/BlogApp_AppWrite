@@ -1,8 +1,8 @@
 import React from 'react'
-
+import { SiHelpscout } from "react-icons/si";
 const Logo = ({children}) => {
   return (
-    <div className={`text-green-900 ${children}`}>Logo</div>
+    <div className={`${children}`}><SiHelpscout size={30}/></div>
   )
 }
 

@@ -44,7 +44,6 @@ const SignUp = () => {
                     </Link>
                 </p>
                 {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
-
                 <form onSubmit={handleSubmit(createAcc)}>
                     <div className='space-y-5'>
                         <Input

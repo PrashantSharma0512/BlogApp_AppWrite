@@ -35,12 +35,12 @@ const Header = () => {
     },
   ]
   return (
-    <header>
+    <header className='bg-zinc-200 py-3 shadow-lg'>
       <Container>
-        <nav className='flex'>
+        <nav className='flex items-center'>
           <div className='mr-4'>
             <Link to={'/'}>
-              <Logo />
+              <Logo  />
             </Link>
           </div>
           <ul className='flex ml-auto'>
@@ -49,7 +49,7 @@ const Header = () => {
                   <li key={item.name}>
                       <button
                       onClick={()=>navigate(item.slug)}
-                      className='inline-bock px-6 py-2 duration-200 hover:bg-blue-100 rounded-full'
+                      className='inline-block px-6 py-2 duration-200 hover:bg-zinc-500 rounded-full active:bg-neutral-600'
                       >{item.name}</button>
                   </li>
                 ): null

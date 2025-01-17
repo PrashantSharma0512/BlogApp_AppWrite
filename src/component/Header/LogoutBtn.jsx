@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import AuthService from '../../appWrite/auth';
 import { logout } from '../../store/authSlice';
-
+import { IoMdLogOut } from "react-icons/io";
 const LogoutBtn = () => {
 
   const dispatch = useDispatch();
@@ -14,8 +14,13 @@ const LogoutBtn = () => {
 
 
   return (
-    <button className='p-2 text-white'
-      onClick={logoutHandler}>LogoutBtn</button>
+    <>
+    <button className='p-2 '
+      onClick={logoutHandler}>
+        <IoMdLogOut  size={30}/>
+        {/* LogoutBtn */}
+        </button>
+    </>
   )
 }
 

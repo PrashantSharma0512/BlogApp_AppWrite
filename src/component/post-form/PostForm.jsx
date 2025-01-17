@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button, Input, RTE, Select } from '../index'
 import appwriteService from '../../appWrite/configDB'
@@ -14,13 +14,13 @@ function PostForm({ post }) {
       status: post?.status || 'active',
     }
   })
-  console.log("post", post);
+  const [loading, SetLoading] = useState(false)
 
   const navigate = useNavigate()
   const userData = useSelector((state) => state.auth.userData)
   // on handle submit function
-  const submit = async (data) => {1
-
+  const submit = async (data) => {
+    SetLoading(true)
     if (post) {
       const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
       if (file) {
@@ -35,26 +35,19 @@ function PostForm({ post }) {
       }
     } else {
       const file = await appwriteService.uploadFile(data.image[0])
-      console.log("file",file);
       if (file) {
-        console.log('inside if condition');
         const fileId = file.$id
         data.featuredImage = fileId
-        console.log("data",data);
-        console.log("userData",userData);
-        
-        
         const dbpost = await appwriteService.createPost({
           ...data,
           userId: userData.$id,
         })
-        console.log(dbpost);
-        
         if (dbpost) {
           navigate(`/post/${dbpost.$id}`)
         }
       }
     }
+    SetLoading(false)
   }
 
   const slugTransform = useCallback(
@@ -124,7 +117,7 @@ function PostForm({ post }) {
           className="mb-4"
           {...register("status", { required: true })}
         />
-        <Button type="submit" bgColor={post ? "bg-green-500" : "bg-red-700"} className="w-full border ">
+        <Button type="submit" bgColor={post ? "bg-green-500" : "bg-blue-700"} className="w-full border ">
           {post ? "Update" : "Submit"}
         </Button>
       </div>

@@ -26,8 +26,8 @@ function App() {
 
 
   return !loading ? (
-    <div className='min-h-screen flex flex-wrap content-between bg-blue-600'>
-      <div className='w-full block'>
+    <div className='min-h-screen flex flex-wrap content-between bg-zinc-200'>
+      <div className='w-full flex flex-col justify-between'>
         <Header />
         <main className=''>
           <Outlet />
@@ -36,11 +36,7 @@ function App() {
       </div>
     </div>
   ) : (
-    <div className='flex w-screen h-screen justify-center items-center relative text-blue-600 font-bold'><div>
-    </div>
-
-    </div>
-    // <Loader/>
+    <Loader/>
   )
 }
 
