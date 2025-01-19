@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import appwriteService from '../appWrite/configDB'
 import { Link } from 'react-router-dom'
+import Share from '../utils/Share';
+import { PiShareFatFill } from "react-icons/pi";
 const PostCard = ({ $id, title, featuredImage, description = 'I am Descripition', $createdAt, content }) => {
   // const [date , setDate] = useState()
   const formatDate = (isoDate) => {
@@ -20,7 +22,7 @@ const PostCard = ({ $id, title, featuredImage, description = 'I am Descripition'
   return (
     <Link to={`/post/${$id}`}>
 
-      <div className="max-w-md mx-auto bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 text-white transform hover:-translate-y-2">
+      <div className="max-w-md mx-auto bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 text-white transform hover:-translate-y-2 ">
 
         <div className="relative w-full h-48 overflow-hidden">
           <img
@@ -38,10 +40,26 @@ const PostCard = ({ $id, title, featuredImage, description = 'I am Descripition'
           <h2 className="text-2xl font-bold text-gray-100 leading-tight uppercase tracking-wide hover:text-red-500 transition-colors duration-200">
             {title}
           </h2>
-
-          <p className="mt-4 text-gray-300 text-sm line-clamp-3 capitalize leading-relaxed">
-            {content?.replace(/<\/?[^>]+>/g, "").replace(/^(&nbsp;|\s)+|(&nbsp;|\s)+$/g, "").trim() || "No content available"}
-          </p>
+          <div className="relative group">
+            <p
+              className="mt-4 text-gray-300 text-sm line-clamp-3 capitalize leading-relaxed truncate"
+              style={{ maxWidth: "220px" }}
+            >
+              {content
+                ?.replace(/<\/?[^>]+>/g, "")
+                .replace(/&nbsp;/g, " ")
+                .trim() || "No content available"}
+            </p>
+            <div
+              className="absolute -left-6 z-10 hidden w-max max-w-xs p-2 text-sm text-white bg-gray-800 rounded shadow-lg group-hover:block"
+              style={{ top: "100%", whiteSpace: "normal" }}
+            >
+              {content
+                ?.replace(/<\/?[^>]+>/g, "")
+                .replace(/&nbsp;/g, " ")
+                .trim() || "No content available"}
+            </div>
+          </div>
 
 
           <p className="text-sm text-red-400 mt-4 font-medium">Posted on:{date}</p>
@@ -52,21 +70,7 @@ const PostCard = ({ $id, title, featuredImage, description = 'I am Descripition'
               Read More
             </button>
             <div className="flex items-center text-gray-400 text-xs space-x-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-4 h-4"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 7.5v9m4.5-4.5h-9"
-                />
-              </svg>
-              <span>Share</span>
+              <PiShareFatFill size={30}/>
             </div>
           </div>
         </div>

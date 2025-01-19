@@ -23,9 +23,12 @@ const Login = () => {
                 }
                 navigate('/')
             }
-            setLoading(false)
+            
         } catch (error) {
             setError(error.message)
+        }
+        finally{
+            setLoading(false)
         }
     }
     return (
@@ -72,7 +75,10 @@ const Login = () => {
                         />
                         {
                             loading ?
-                                <h1>Loading...</h1>
+                                <Button
+                                    children="Signing In..."
+                                    className="w-full text-white"
+                                />
                                 :
                                 <Button
                                     children="Sign In"

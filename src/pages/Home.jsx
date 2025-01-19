@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import appwriteService from '../appWrite/configDB'
 import { Container, PostCard } from '../component/index'
-import Loader from '../loader/Loader';
+import Loader from '../utils/PulseLoader';
 // import authSlice from '../store/authSlice';
 
 function Home() {
@@ -19,7 +19,7 @@ function Home() {
             } catch (error) {
                 console.error("Error fetching posts:", error);
             } finally {
-                setLoading(false); 
+                setLoading(false);
             }
         };
 
@@ -27,7 +27,9 @@ function Home() {
     }, []);
     return (
         loading ? (
-            <Loader />
+            <div className='flex justify-center items-center '>
+                <Loader />
+            </div>
         ) :
             post.length === 0 ? (
                 <div className="w-full py-8 mt-4 text-center h-[54.7vh]">
@@ -44,7 +46,7 @@ function Home() {
             ) : (
                 <div className="w-full py-8 ">
                     <Container>
-                        <div className="flex flex-wrap">
+                        <div className="flex flex-wrap ">
                             {post.map((post) => (
                                 <div key={post.$id} className="p-2 w-1/4">
                                     <PostCard {...post} />

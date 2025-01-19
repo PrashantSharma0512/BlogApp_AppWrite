@@ -10,8 +10,10 @@ const SignUp = () => {
     const navigate = useNavigate()
     const { register, handleSubmit } = useForm()
     const [error, setError] = useState("")
+    const [loading, setLoading] = useState(false)
     const createAcc = async (data) => {
         setError("")
+        setLoading(true)
         try {
             const userData = await authService.createAccount(data)
             if (userData) {
@@ -23,6 +25,8 @@ const SignUp = () => {
             }
         } catch (error) {
             setError(error.message)
+        } finally {
+            setLoading(false)
         }
     }
     return (
@@ -73,9 +77,17 @@ const SignUp = () => {
                                 required: true,
                             })}
                         />
-                        <Button type="submit" className="w-full">
-                            Create Account
-                        </Button>
+                        {
+                            loading ?
+                                <Button className="w-full">
+                                    Creating Account...
+                                </Button>
+                                :
+                                <Button type="submit" className="w-full">
+                                    Create Account
+                                </Button>
+                        }
+
                     </div>
                 </form>
             </div>

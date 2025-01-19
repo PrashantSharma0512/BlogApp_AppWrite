@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import appwriteService from '../appWrite/configDB'
 import { Container, PostCard } from '../component/index'
-import Loader from '../loader/Loader'
+import Loader from '../utils/PulseLoader'
 
 function AllPost() {
     const [posts, setPosts] = useState([])
@@ -16,17 +16,19 @@ function AllPost() {
                 }
             } catch (error) {
                 console.error("Failed to fetch posts:", error);
-            }finally{
+            } finally {
                 SetLoading(false);
             }
         };
         fetchPosts();
-       
+
     }, []);
 
     return (
         loading ?
-            <Loader />
+            <div className='flex justify-center items-center '>
+                <Loader />
+            </div>
             :
             <div className='w-full py-8 '>
                 <Container>
