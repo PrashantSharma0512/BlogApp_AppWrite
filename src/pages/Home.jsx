@@ -6,17 +6,25 @@ import Loader from '../loader/Loader';
 
 function Home() {
     const [post, setPost] = useState([]);
-    const [loading, SetLoading] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        SetLoading(true)
-        appwriteService.getPostList().then((posts) => {
-            if (posts) {
-                setPost(posts.documents)
+        const fetchPosts = async () => {
+            setLoading(true);
+            try {
+                const posts = await appwriteService.getPostList();
+                if (posts) {
+                    setPost(posts.documents);
+                }
+            } catch (error) {
+                console.error("Error fetching posts:", error);
+            } finally {
+                setLoading(false); 
             }
-        })
-        SetLoading(false)
-    }, [])
+        };
+
+        fetchPosts();
+    }, []);
     return (
         loading ? (
             <Loader />

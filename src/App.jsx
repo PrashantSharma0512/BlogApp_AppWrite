@@ -26,7 +26,7 @@ function App() {
 
 
   return !loading ? (
-    <div className='min-h-screen flex flex-wrap content-between bg-zinc-200'>
+    <div className='min-h-screen flex content-between bg-zinc-200'>
       <div className='w-full flex flex-col justify-between'>
         <Header />
         <main className=''>
@@ -36,7 +36,7 @@ function App() {
       </div>
     </div>
   ) : (
-    <Loader/>
+    <Loader />
   )
 }
 

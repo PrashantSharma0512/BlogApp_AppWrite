@@ -8,74 +8,70 @@ const PostCard = ({ $id, title, featuredImage, description = 'I am Descripition'
     return date.toLocaleDateString('en-GB'); // 'en-GB' formats as dd/mm/yyyy
   };
   let date = formatDate($createdAt);
+  function isOlderThanOneWeek(postDate) {
+    const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000; // One week in milliseconds
+    const postDateObj = new Date(postDate); // Convert the post date to a Date object
+    const currentDate = new Date(); // Current date
+    const timeDifference = currentDate - postDateObj; // Difference in milliseconds
+
+    return timeDifference > oneWeekInMilliseconds; // True if the post is older than one week
+  }
+
   return (
     <Link to={`/post/${$id}`}>
-      {/* card 1 */}
-      {/* <div className='w-full bg-zinc-900 rounded-xl p-4 flex justify-center items-center flex-col'>
-        <div className='w-full flex justify-center items-center py-2 '>
-            <img src={appwriteService.getPreview(featuredImage)} alt={title} className='rounded-xl'/>
+
+      <div className="max-w-md mx-auto bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 text-white transform hover:-translate-y-2">
+
+        <div className="relative w-full h-48 overflow-hidden">
+          <img
+            className="h-full w-full object-cover rounded-t-3xl transition-transform duration-300 hover:scale-110"
+            src={appwriteService.getPreview(featuredImage)}
+            alt="Post"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
+          <span className="absolute bottom-3 left-3 bg-blue-600 text-xs font-semibold uppercase px-3 py-1 rounded-full shadow-md">
+            {isOlderThanOneWeek(date) ? "Featured" : "New Post"}
+          </span>
         </div>
-        <h2
-        className='text-xl font-bold text-white'
-        >{title}</h2>
-      </div> */}
-      {/* card 2 */}
-      {/* <div className="max-w-md mx-auto bg-zinc-950 rounded-xl shadow-md overflow-hidden md:max-w-2xl text-white">
-        <div className="md:flex">
-          <div className="md:w-1/3 p-1">
-            <img
-              className="h-full w-full object-cover rounded-l-xl"
-              src={appwriteService.getPreview(featuredImage)}
-              alt="Post"
-            />
-          </div>
-          <div className="p-4 md:w-2/3">
-            <h2 className="text-lg font-bold text-gray-300">{title}</h2>
-            <p className="text-sm text-gray-400 mt-1">{date}</p>
-            <p className="mt-2 text-gray-700 truncate" style={{ maxWidth: "200px" }}>
-              {content.replace(/<\/?[^>]+(>|$)/g, "")}
-            </p>
-          </div>
-        </div>
-      </div> */}
-      {/* card 3 */}
-      {/* <div className="max-w-md mx-auto bg-gradient-to-r from-gray-800 via-zinc-950 to-gray-800 rounded-xl shadow-lg overflow-hidden md:max-w-2xl text-white transition-transform transform hover:scale-105">
-        <div className="md:flex">
-          <div className="p-6 md:w-2/3">
-            <h2 className="text-xl font-extrabold text-gray-100 leading-tight">{title}</h2>
-            <p className="text-sm text-gray-400 mt-1">{date}</p>
-            <p className="mt-3 text-gray-300 truncate" style={{ maxWidth: "220px" }}>
-              {content.replace(/<\/?[^>]+(>|$)/g, "")}
-            </p>
-            <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800">
-              Read More
-            </button>
-          </div>
-          <div className="md:w-1/3">
-            <img
-              className="h-full w-full object-cover rounded-r-xl shadow-md"
-              src={appwriteService.getPreview(featuredImage)}
-              alt="Post"
-            />
-          </div>
-        </div>
-      </div> */}
-      <div className="max-w-md mx-auto bg-zinc-950 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 text-white">
-        <img
-          className="h-48 w-full object-cover"
-          src={appwriteService.getPreview(featuredImage)}
-          alt="Post"
-        />
         <div className="p-6">
-          <h2 className="text-2xl font-bold text-gray-100 leading-tight uppercase">
+
+          <h2 className="text-2xl font-bold text-gray-100 leading-tight uppercase tracking-wide hover:text-red-500 transition-colors duration-200">
             {title}
           </h2>
-          <p className="text-sm text-gray-400 mt-2">{date}</p>
-          <p className="mt-4 text-gray-300 line-clamp-3">
-            {content.replace(/<\/?[^>]+(>|$)/g, "")}
+
+          <p className="mt-4 text-gray-300 text-sm line-clamp-3 capitalize leading-relaxed">
+            {content?.replace(/<\/?[^>]+>/g, "").replace(/^(&nbsp;|\s)+|(&nbsp;|\s)+$/g, "").trim() || "No content available"}
           </p>
+
+
+          <p className="text-sm text-red-400 mt-4 font-medium">Posted on:{date}</p>
+
+
+          <div className="mt-6 flex justify-between items-center">
+            <button className="px-6 py-3 text-sm font-semibold text-black bg-gradient-to-r from-red-500 to-yellow-500 rounded-full shadow-lg hover:shadow-xl hover:from-red-600 hover:to-yellow-600 transition-transform transform hover:scale-105">
+              Read More
+            </button>
+            <div className="flex items-center text-gray-400 text-xs space-x-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-4 h-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 7.5v9m4.5-4.5h-9"
+                />
+              </svg>
+              <span>Share</span>
+            </div>
+          </div>
         </div>
       </div>
+
 
 
     </Link>
