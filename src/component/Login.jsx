@@ -11,6 +11,7 @@ const Login = () => {
     const { register, handleSubmit } = useForm()
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
+    
     const login = async (data) => {
         setError("")
         setLoading(true)

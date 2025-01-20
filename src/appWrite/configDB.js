@@ -82,20 +82,15 @@ export class Service {
             if (!config.appwriteDatabaseId || !config.appwriteCollectionId) {
                 throw new Error("Database ID or Collection ID is missing in config.");
             }
-
-            // Ensure queries is an array
             if (!Array.isArray(queries)) {
                 queries = [queries];
             }
-
             // Fetch documents
             const response = await this.databases.listDocuments(
                 config.appwriteDatabaseId,
                 config.appwriteCollectionId,
                 queries
             );
-
-            console.log("getPostList response:", response);
             return response;
         } catch (error) {
             console.error("appwrite::getPostList:: error", error.message || error);
