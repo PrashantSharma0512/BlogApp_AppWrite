@@ -1,7 +1,7 @@
 # Blog App
 
 ### Live Project Link
-[Blog App](https://prashantblogappappwrite-io4s2npj3.vercel.app/)
+[Blog App](https://prashant-blog-app-appwrite.vercel.app/)
 
 ---
 
