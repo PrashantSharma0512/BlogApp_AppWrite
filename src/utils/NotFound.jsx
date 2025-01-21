@@ -9,23 +9,7 @@ const NotFound = () => {
                 {/* 404 Text */}
                 <h1 className="text-9xl font-extrabold text-gray-800 animate-bounce">404</h1>
 
-                {/* Jerry Running */}
-                <div className="absolute -top-16 left-1/3 animate-run">
-                    <img
-                        src="https://th.bing.com/th/id/OIP.GZrJyXuYgjzp3Wd9JhxUqgHaE7?rs=1&pid=ImgDetMain"
-                        alt="Jerry"
-                        className="w-20 h-20 object-cover custom-mask"
-                    />
-                </div>
-
-                {/* Tom Chasing */}
-                <div className="absolute -top-16 left-1/3 animate-run">
-                    <img
-                        src="https://th.bing.com/th/id/OIP.NJOqUCeOLSzAg6VqPUMv5AHaFJ?rs=1&pid=ImgDetMain"
-                        alt="Jerry"
-                        className="w-20 h-20 object-cover custom-mask"
-                    />
-                </div>
+                
             </div>
 
             {/* Funny Message */}
