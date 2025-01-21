@@ -101,8 +101,9 @@ function PostForm({ post }) {
         ></div>
       )}
 
-      <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-        <div className="w-2/3 px-2">
+      <form onSubmit={handleSubmit(submit)} className="flex flex-wrap md:flex-nowrap">
+        {/* Main Content Section */}
+        <div className="w-full md:w-2/3 px-2">
           <Input
             label="Title :"
             placeholder="Title"
@@ -120,7 +121,9 @@ function PostForm({ post }) {
           />
           <RTE label="Content :" name="content" control={control} defaultValue={getValues('content')} />
         </div>
-        <div className="w-1/3 px-2">
+
+        {/* Sidebar Section */}
+        <div className="w-full md:w-1/3 px-2 mt-6 md:mt-0">
           <Input
             label="Featured Image :"
             type="file"
@@ -133,7 +136,7 @@ function PostForm({ post }) {
               <img
                 src={appwriteService.getPreview(post.featuredImage)}
                 alt={post.title}
-                className="rounded-lg"
+                className="rounded-lg w-full"
               />
             </div>
           )}
