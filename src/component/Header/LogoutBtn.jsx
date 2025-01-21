@@ -4,7 +4,7 @@ import AuthService from '../../appWrite/auth';
 import { logout } from '../../store/authSlice';
 import { FiLogOut } from 'react-icons/fi';
 
-const LogoutBtn = () => {
+const LogoutBtn = ({icon}) => {
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
   const dispatch = useDispatch();
 
@@ -21,7 +21,7 @@ const LogoutBtn = () => {
     <>
       {/* Logout Button */}
       <button className="p-2" onClick={openModal}>
-        <FiLogOut size={30} />
+        {icon ? <FiLogOut size={30} /> : 'Logout'}
       </button>
 
       {/* Confirmation Modal */}

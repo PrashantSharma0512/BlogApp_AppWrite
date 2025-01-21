@@ -10,9 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.10.5",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@reduxjs/toolkit": "^2.2.6",
     "@tinymce/tinymce-react": "^5.1.1",
     "appwrite": "^15.0.0",
+    "framer-motion": "^12.0.0",
     "html-react-parser": "^5.1.10",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

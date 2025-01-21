@@ -5,6 +5,7 @@ import { login, logout } from './store/authSlice'
 import { Footer, Header } from './component/index'
 import { Outlet } from 'react-router-dom'
 import Loader from './utils/Loader'
+import { ChakraProvider } from '@chakra-ui/react'
 
 function App() {
   const [loading, setloading] = useState(true)
@@ -25,15 +26,17 @@ function App() {
 
 
   return !loading ? (
-    <div className='min-h-screen flex content-between bg-zinc-200'>
-      <div className='w-full flex flex-col justify-between'>
-        <Header />
-        <main className=''>
-          <Outlet />
-        </main>
-        <Footer />
+    <ChakraProvider>
+      <div className='min-h-screen flex content-between bg-zinc-200'>
+        <div className='w-full flex flex-col justify-between'>
+          <Header />
+          <main className=''>
+            <Outlet />
+          </main>
+          <Footer />
+        </div>
       </div>
-    </div>
+    </ChakraProvider>
   ) : (
     <Loader />
   )
