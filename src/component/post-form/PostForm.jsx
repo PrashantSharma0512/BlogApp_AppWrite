@@ -4,6 +4,7 @@ import { Button, Input, RTE, Select } from '../index';
 import appwriteService from '../../appWrite/configDB';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useToast } from '@chakra-ui/react';
 
 function PostForm({ post }) {
   const { register, handleSubmit, watch, control, setValue, getValues } = useForm({
@@ -12,15 +13,16 @@ function PostForm({ post }) {
       slug: post?.$id || '',
       content: post?.content || '',
       status: post?.status || 'active',
+      featuredImage: post?.featuredImage || '',
     },
   });
-  const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0); // Progress state
 
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const toast = useToast();
   const navigate = useNavigate();
   const userData = useSelector((state) => state.auth.userData);
 
-  // Simulate progress for visual feedback
   const simulateProgress = () => {
     let currentProgress = 0;
     const interval = setInterval(() => {
@@ -29,72 +31,84 @@ function PostForm({ post }) {
       if (currentProgress >= 100) {
         clearInterval(interval);
       }
-    }, 100); // Increment progress every 100ms
+    }, 100);
   };
 
   const submit = async (data) => {
     setLoading(true);
-    simulateProgress(); // Start progress simulation
+    simulateProgress();
+
     try {
-      if (post) {
-        const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null;
-        if (file) {
-          appwriteService.deleteFile(post.featuredImage);
-        }
-        const dbpost = await appwriteService.updatePost(post.$id, {
-          ...data,
-          featuredImage: file ? file.$id : undefined,
-        });
-        if (dbpost) {
-          navigate(`/post/${dbpost.$id}`);
-        }
-      } else {
+      let fileId = post?.featuredImage || ''; // Preserve existing image if no new image is uploaded
+
+      if (data.image?.[0]) {
         const file = await appwriteService.uploadFile(data.image[0]);
-        if (file) {
-          const fileId = file.$id;
-          data.featuredImage = fileId;
-          const dbpost = await appwriteService.createPost({
-            ...data,
-            userId: userData.$id,
-          });
-          if (dbpost) {
-            navigate(`/post/${dbpost.$id}`);
-          }
+        fileId = file?.$id || '';
+
+        if (post?.featuredImage) {
+          await appwriteService.deleteFile(post.featuredImage);
         }
       }
-      setLoading(false)
+
+      const postData = {
+        ...data,
+        featuredImage: fileId,
+        userId: userData.$id,
+      };
+
+      let dbpost;
+      if (post) {
+        dbpost = await appwriteService.updatePost(post.$id, postData);
+      } else {
+        dbpost = await appwriteService.createPost(postData);
+      }
+
+      if (dbpost) {
+        toast({
+          title: 'Success',
+          position: 'top-right',
+          description: `Post ${post ? 'updated' : 'created'} successfully!`,
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+        navigate(`/post/${dbpost.$id}`);
+      }
     } catch (error) {
       console.error('Error submitting post:', error);
+      toast({
+        title: 'Error',
+        position: 'top-right',
+        description: 'Something went wrong while submitting the post.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setLoading(false);
+      setProgress(100);
     }
-    setLoading(false);
-    setProgress(100); // Ensure progress completes on success/failure
   };
 
   const slugTransform = useCallback((value) => {
-    if (value && typeof value === 'string') {
-      return value
-        .trim()
-        .toLowerCase()
-        .replace(/[^a-zA-Z\d\s]/g, '-')
-        .replace(/\s/g, '-');
-    }
-    return '';
+    return value
+      ?.trim()
+      .toLowerCase()
+      .replace(/[^a-zA-Z\d\s]/g, '-')
+      .replace(/\s/g, '-');
   }, []);
 
   useEffect(() => {
     const subscription = watch((value, { name }) => {
       if (name === 'title') {
-        setValue('slug', slugTransform(value.title, { shouldValidate: true }));
+        setValue('slug', slugTransform(value.title), { shouldValidate: true });
       }
     });
-    return () => {
-      subscription.unsubscribe();
-    };
+    return () => subscription.unsubscribe();
   }, [watch, slugTransform, setValue]);
 
   return (
     <div className="relative">
-      {/* Top Progress Bar */}
       {loading && (
         <div
           className="fixed top-0 left-0 h-1 bg-blue-500 transition-all duration-300 z-50"
@@ -103,7 +117,6 @@ function PostForm({ post }) {
       )}
 
       <form onSubmit={handleSubmit(submit)} className="flex flex-wrap md:flex-nowrap">
-        {/* Main Content Section */}
         <div className="w-full md:w-2/3 px-2">
           <Input
             label="Title :"
@@ -123,16 +136,15 @@ function PostForm({ post }) {
           <RTE label="Content :" name="content" control={control} defaultValue={getValues('content')} />
         </div>
 
-        {/* Sidebar Section */}
         <div className="w-full md:w-1/3 px-2 mt-6 md:mt-0">
           <Input
             label="Featured Image :"
             type="file"
             className="mb-4"
             accept="image/png, image/jpg, image/jpeg, image/gif"
-            {...register('image', { required: !post })}
+            {...register('image')}
           />
-          {post && (
+          {post?.featuredImage && (
             <div className="w-full mb-4">
               <img
                 src={appwriteService.getPreview(post.featuredImage)}
@@ -151,7 +163,7 @@ function PostForm({ post }) {
             type="submit"
             bgColor={post ? 'bg-green-500' : 'bg-blue-700'}
             className="w-full border"
-            disabled={loading} // Disable button during submission
+            disabled={loading}
           >
             {loading ? 'Submitting...' : post ? 'Update' : 'Submit'}
           </Button>
