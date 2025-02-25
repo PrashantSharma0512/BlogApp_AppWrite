@@ -12,7 +12,7 @@ export class Service {
         this.databases = new Databases(this.client);
         this.bucket = new Storage(this.client);
     }
-    async createPost({ title, slug, featuredImage, content, status, userId }) {
+    async createPost({ title, slug, featureImage, content, status, userId }) {
         try {
             return await this.databases.createDocument(
                 config.appwriteDatabaseId,
@@ -21,18 +21,17 @@ export class Service {
                 {
                     title,
                     content,
-                    featuredImage,
+                    featureImage,
                     status,
                     userId,
                 },
             )
 
         } catch (error) {
-            console.error(error);
             throw error;
         }
     }
-    async updatePost(slug, { title, featuredImage, content, status }) {
+    async updatePost(slug, { title, featureImage, content, status }) {
         try {
             return await this.databases.updateDocument(
                 config.appwriteDatabaseId,
@@ -40,7 +39,7 @@ export class Service {
                 slug,
                 {
                     title,
-                    featuredImage,
+                    featureImage,
                     content,
                     status,
                 },
@@ -82,15 +81,20 @@ export class Service {
             if (!config.appwriteDatabaseId || !config.appwriteCollectionId) {
                 throw new Error("Database ID or Collection ID is missing in config.");
             }
+
+            // Ensure queries is an array
             if (!Array.isArray(queries)) {
                 queries = [queries];
             }
+
             // Fetch documents
             const response = await this.databases.listDocuments(
                 config.appwriteDatabaseId,
                 config.appwriteCollectionId,
                 queries
             );
+
+            console.log("getPostList response:", response);
             return response;
         } catch (error) {
             console.error("appwrite::getPostList:: error", error.message || error);

@@ -62,6 +62,7 @@ function PostForm({ post }) {
           }
         }
       }
+      setLoading(false)
     } catch (error) {
       console.error('Error submitting post:', error);
     }
