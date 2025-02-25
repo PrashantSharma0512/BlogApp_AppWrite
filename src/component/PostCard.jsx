@@ -21,11 +21,11 @@ const PostCard = ({ $id, title, featuredImage, $createdAt, content }) => {
   return (
     <Link to={`/post/${$id}`}>
 
-      <div className="max-w-md mx-auto bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 text-white transform hover:-translate-y-2 ">
+      <div className="max-w-md mx-auto bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 text-white transform hover:-translate-y-2 max-md:w-[65vw]">
 
         <div className="relative w-full h-48 overflow-hidden">
           <img
-            className="h-full w-full object-cover rounded-t-3xl transition-transform duration-300 hover:scale-110"
+            className="h-full w-full object-cover rounded-t-3xl transition-transform duration-300 hover:scale-1"
             src={appwriteService.getPreview(featuredImage)}
             alt="Post"
           />
