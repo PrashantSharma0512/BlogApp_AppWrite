@@ -9,19 +9,17 @@ const PostCard = ({ $id, title, featuredImage, $createdAt, content }) => {
     return date.toLocaleDateString('en-GB');
   };
   let date = formatDate($createdAt);
-  function isOlderThanOneWeek(postDate) {
+  function isOlderThanOneWeek() {
     const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
-    const postDateObj = new Date(postDate);
+    const postDateObj = new Date($createdAt);
     const currentDate = new Date();
     const timeDifference = currentDate - postDateObj;
 
     return timeDifference > oneWeekInMilliseconds;
   }
-console.log("featuredImage",date);
 
   return (
     <Link to={`/post/${$id}`}>
-
       <div className="max-w-md min-h-[60vh] mx-auto bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 text-white transform hover:-translate-y-2 max-md:w-[65vw] max-md:h-[70vh] ">
 
         <div className="relative w-full h-48 overflow-hidden">
@@ -31,8 +29,8 @@ console.log("featuredImage",date);
             alt="Post"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
-          <span className="absolute bottom-3 left-3 bg-blue-600 text-xs font-semibold uppercase px-3 py-1 rounded-full shadow-md">
-            {isOlderThanOneWeek(date) ? "Featured" : "New Post"}
+          <span className={`absolute bottom-3 left-3 ${isOlderThanOneWeek() ? 'bg-blue-600' : 'bg-red-600'} text-xs font-semibold uppercase px-3 py-1 rounded-full shadow-md`}>
+            {isOlderThanOneWeek() ? "featured" : "New Post"}
           </span>
         </div>
         <div className="p-6">

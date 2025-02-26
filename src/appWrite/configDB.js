@@ -58,7 +58,7 @@ export class Service {
             return true;
 
         } catch (error) {
-            console.log("appwrite:: error", error);
+            console.error("appwrite:: error", error);
             return false;
         }
     }
@@ -71,7 +71,7 @@ export class Service {
             )
 
         } catch (error) {
-            console.log("appwrite::getpost:: error", error);
+            console.error("appwrite::getpost:: error", error);
             return false;
         }
     }
@@ -94,7 +94,6 @@ export class Service {
                 queries
             );
 
-            console.log("getPostList response:", response);
             return response;
         } catch (error) {
             console.error("appwrite::getPostList:: error", error.message || error);

@@ -9,7 +9,6 @@ function AllPost() {
         const fetchPosts = async () => {
             try {
                 const posts = await appwriteService.getPostList([]);
-                console.log(posts);
                 if (posts) {
                     setPosts(posts.documents);
                 }
