@@ -17,11 +17,12 @@ const PostCard = ({ $id, title, featuredImage, $createdAt, content }) => {
 
     return timeDifference > oneWeekInMilliseconds;
   }
+console.log("featuredImage",date);
 
   return (
     <Link to={`/post/${$id}`}>
 
-      <div className="max-w-md mx-auto bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 text-white transform hover:-translate-y-2 max-md:w-[65vw]">
+      <div className="max-w-md min-h-[60vh] mx-auto bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 text-white transform hover:-translate-y-2 max-md:w-[65vw] max-md:h-[70vh] ">
 
         <div className="relative w-full h-48 overflow-hidden">
           <img
