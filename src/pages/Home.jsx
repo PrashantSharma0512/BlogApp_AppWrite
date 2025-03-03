@@ -13,7 +13,6 @@ function Home() {
         const fetchUser = async () => {
             try {
                 const currentUser = await authService.getCurrentUser();
-                console.log("User logged in:", currentUser);
                 if (currentUser) {
                     setUserExist(true);
                 } else {
