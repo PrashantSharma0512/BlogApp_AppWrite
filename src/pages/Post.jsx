@@ -55,7 +55,7 @@ export default function Post() {
                             &nbsp;
                             <Button bgColor="bg-blue-500" >
                                 <Link to={'/all-posts'}>
-                                    Go Back
+                                    Show More
                                 </Link>
                             </Button>
 

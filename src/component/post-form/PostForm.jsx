@@ -91,73 +91,154 @@ function PostForm({ post }) {
   //   }
   // };
 
-  const submit = async (data) => {
-    setLoading(true);
-    simulateProgress();
+//   const submit = async (data) => {
+//     setLoading(true);
+//     simulateProgress();
 
-    let newFileId = null; 
+//     let newFileId = null; 
 
-    try {
-        let fileId = post?.featuredImage || ''; 
+//     try {
+//         let fileId = post?.featuredImage || ''; 
 
-        if (data.image?.[0]) {
-            // Upload new image
-            const file = await appwriteService.uploadFile(data.image[0]);
-            newFileId = file?.$id || '';
-            fileId = newFileId;
+//         if (data.image?.[0]) {
+//             // Upload new image
+//             const file = await appwriteService.uploadFile(data.image[0]);
+//             newFileId = file?.$id || '';
+//             fileId = newFileId;
 
-            // Delete old image only after successful upload
-            if (post?.featuredImage) {
-                await appwriteService.deleteFile(post.featuredImage);
-            }
-        }
+//             // Delete old image only after successful upload
+//             if (post?.featuredImage) {
+//                 await appwriteService.deleteFile(post.featuredImage);
+//             }
+//         }
 
-        const postData = {
-            ...data,
-            featuredImage: fileId,
-            userId: userData.$id,
-        };
+//         const postData = {
+//             ...data,
+//             featuredImage: fileId,
+//             userId: userData.$id,
+//         };
 
-        let dbpost;
-        if (post) {
-            dbpost = await appwriteService.updatePost(post.$id, postData);
-        } else {
-            dbpost = await appwriteService.createPost(postData);
-        }
+//         let dbpost;
+//         if (post) {
+//             dbpost = await appwriteService.updatePost(post.$id, postData);
+//         } else {
+//             dbpost = await appwriteService.createPost(postData);
+//         }
 
-        if (dbpost) {
-            toast({
-                title: 'Success',
-                position: 'top-right',
-                description: `Post ${post ? 'updated' : 'created'} successfully!`,
-                status: 'success',
-                duration: 5000,
-                isClosable: true,
-            });
-            navigate(`/post/${dbpost.$id}`);
-        }
-    } catch (error) {
-        console.error('Error submitting post:', error);
+//         if (dbpost) {
+//             toast({
+//                 title: 'Success',
+//                 position: 'top-right',
+//                 description: `Post ${post ? 'updated' : 'created'} successfully!`,
+//                 status: 'success',
+//                 duration: 5000,
+//                 isClosable: true,
+//             });
+//             navigate(`/post/${dbpost.$id}`);
+//         }
+//     } catch (error) {
+//         console.error('Error submitting post:', error);
 
-        // If a new image was uploaded but post creation failed, delete it
-        if (newFileId) {
-            await appwriteService.deleteFile(newFileId);
-        }
+//         // If a new image was uploaded but post creation failed, delete it
+//         if (newFileId) {
+//             await appwriteService.deleteFile(newFileId);
+//         }
 
-        toast({
-            title: 'Error',
-            position: 'top-right',
-            description: 'Something went wrong while submitting the post.',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-        });
-    } finally {
-        setLoading(false);
-        setProgress(100);
-    }
+//         toast({
+//             title: 'Error',
+//             position: 'top-right',
+//             description: `Something went wrong while submitting the post.${error}`,
+//             status: 'error',
+//             duration: 5000,
+//             isClosable: true,
+//         });
+//     } finally {
+//         setLoading(false);
+//         setProgress(100);
+//     }
+// };
+
+const submit = async (data) => {
+  setLoading(true);
+  simulateProgress();
+
+  let newFileId = null; // Track new uploaded file ID
+
+  try {
+      let fileId = post?.featuredImage || ''; // Preserve existing image if no new image is uploaded
+
+      if (data.image?.[0]) {
+          const file = data.image[0];
+
+          // Debugging: Check file properties
+          console.log("File Selected:", file);
+          console.log("File Type:", file.type);
+          console.log("File Size:", file.size);
+
+          // Validate file before uploading
+          if (!file.type.startsWith("image/")) {
+              throw new Error("Invalid file type. Please upload an image.");
+          }
+          if (file.size > 5 * 1024 * 1024) {
+              throw new Error("File size exceeds 5MB. Please upload a smaller image.");
+          }
+
+          // Upload new image
+          const uploadedFile = await appwriteService.uploadFile(file);
+          newFileId = uploadedFile?.$id || '';
+          fileId = newFileId;
+
+          // Delete old image only after successful upload
+          if (post?.featuredImage) {
+              await appwriteService.deleteFile(post.featuredImage);
+          }
+      }
+
+      const postData = {
+          ...data,
+          featuredImage: fileId,
+          userId: userData.$id,
+      };
+
+      let dbpost;
+      if (post) {
+          dbpost = await appwriteService.updatePost(post.$id, postData);
+      } else {
+          dbpost = await appwriteService.createPost(postData);
+      }
+
+      if (dbpost) {
+          toast({
+              title: 'Success',
+              position: 'top-right',
+              description: `Post ${post ? 'updated' : 'created'} successfully!`,
+              status: 'success',
+              duration: 5000,
+              isClosable: true,
+          });
+          navigate(`/post/${dbpost.$id}`);
+      }
+  } catch (error) {
+      console.error('Error submitting post:', error);
+
+      // If a new image was uploaded but post creation failed, delete it
+      if (newFileId) {
+          await appwriteService.deleteFile(newFileId);
+      }
+
+      toast({
+          title: 'Error',
+          position: 'top-right',
+          description: error.message || 'Something went wrong while submitting the post.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+      });
+  } finally {
+      setLoading(false);
+      setProgress(100);
+  }
 };
-
   const slugTransform = useCallback((value) => {
     return value
       ?.trim()
