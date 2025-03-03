@@ -39,7 +39,7 @@ export default function Post() {
                     <img
                         src={appwriteService.getPreview(post.featuredImage)}
                         alt={post.title}
-                        className="rounded-xl"
+                        className="rounded-xl w-full h-96 object-contain"
                     />
 
                     {isAuthor && (
@@ -52,6 +52,13 @@ export default function Post() {
                             <Button bgColor="bg-red-500" onClick={deletePost}>
                                 Delete
                             </Button>
+                            &nbsp;
+                            <Button bgColor="bg-blue-500" >
+                                <Link to={'/all-posts'}>
+                                    Go Back
+                                </Link>
+                            </Button>
+
                         </div>
                     )}
                 </div>
@@ -60,7 +67,7 @@ export default function Post() {
                 </div>
                 <div className="browser-css">
                     {parse(post.content)}
-                    </div>
+                </div>
             </Container>
         </div>
     ) : null;
