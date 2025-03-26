@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
@@ -6,14 +6,17 @@ import { Provider } from 'react-redux'
 import store from './store/store.js'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { AuthLayout } from './component/index.js'
-import Home from './pages/Home.jsx'
-import AddPost from './pages/AddPost.jsx'
-import Signup from './pages/Signup.jsx'
-import EditPost from './pages/EditPost.jsx'
-import Post from './pages/Post.jsx'
-import Login from './pages/Login.jsx'
-import AllPost from './pages/AllPost.jsx'
 import NotFound from './utils/NotFound.jsx'
+
+// Lazy load components
+const Home = lazy(() => import('./pages/Home.jsx'));
+const AddPost = lazy(() => import('./pages/AddPost.jsx'));
+const Signup = lazy(() => import('./pages/Signup.jsx'));
+const EditPost = lazy(() => import('./pages/EditPost.jsx'));
+const Post = lazy(() => import('./pages/Post.jsx'));
+const Login = lazy(() => import('./pages/Login.jsx'));
+const AllPost = lazy(() => import('./pages/AllPost.jsx'));
+
 const router = createBrowserRouter([
     {
         path: "/",
@@ -21,13 +24,13 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Home />,
+                element: <Suspense fallback={<div>Loading...</div>}><Home /></Suspense>,
             },
             {
                 path: "/login",
                 element: (
                     <AuthLayout authentication={false}>
-                        <Login />
+                        <Suspense fallback={<div>Loading...</div>}><Login /></Suspense>
                     </AuthLayout>
                 ),
             },
@@ -35,7 +38,7 @@ const router = createBrowserRouter([
                 path: "/signup",
                 element: (
                     <AuthLayout authentication={false}>
-                        <Signup />
+                        <Suspense fallback={<div>Loading...</div>}><Signup /></Suspense>
                     </AuthLayout>
                 ),
             },
@@ -43,8 +46,7 @@ const router = createBrowserRouter([
                 path: "/all-posts",
                 element: (
                     <AuthLayout authentication>
-                        {" "}
-                        <AllPost />
+                        <Suspense fallback={<div>Loading...</div>}><AllPost /></Suspense>
                     </AuthLayout>
                 ),
             },
@@ -52,8 +54,7 @@ const router = createBrowserRouter([
                 path: "/add-post",
                 element: (
                     <AuthLayout authentication>
-                        {" "}
-                        <AddPost />
+                        <Suspense fallback={<div>Loading...</div>}><AddPost /></Suspense>
                     </AuthLayout>
                 ),
             },
@@ -61,17 +62,15 @@ const router = createBrowserRouter([
                 path: "/edit-post/:slug",
                 element: (
                     <AuthLayout authentication>
-                        {" "}
-                        <EditPost />
+                        <Suspense fallback={<div>Loading...</div>}><EditPost /></Suspense>
                     </AuthLayout>
                 ),
             },
             {
                 path: "/post/:slug",
-                element: <Post />,
+                element: <Suspense fallback={<div>Loading...</div>}><Post /></Suspense>,
             }
         ],
-
     },
     {
         path: "*",
@@ -82,7 +81,6 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <Provider store={store}>
-            {/* <BrowserRouter router={router}/> */}
             <RouterProvider router={router} />
         </Provider>
     </React.StrictMode>,
