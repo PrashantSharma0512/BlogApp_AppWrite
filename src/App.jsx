@@ -27,10 +27,10 @@ function App() {
 
   return !loading ? (
     <ChakraProvider>
-      <div className='min-h-screen flex content-between bg-zinc-200'>
-        <div className='w-full flex flex-col justify-between'>
+      <div className='min-h-screen mesh-gradient selection:bg-blue-500/30'>
+        <div className='w-full flex flex-col'>
           <Header />
-          <main className=''>
+          <main className='flex-grow animate-in fade-in slide-in-from-bottom-4 duration-1000'>
             <Outlet />
           </main>
           <Footer />
@@ -38,7 +38,9 @@ function App() {
       </div>
     </ChakraProvider>
   ) : (
-    <Loader />
+    <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+      <Loader />
+    </div>
   )
 }
 

@@ -33,40 +33,65 @@ export default function Post() {
     };
 
     return post ? (
-        <div className="py-8">
+        <div className="py-12 md:py-20 animate-in fade-in duration-700">
             <Container>
-                <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
-                    <img
-                        src={appwriteService.getPreview(post.featuredImage)}
-                        alt={post.title}
-                        className="rounded-xl w-full h-96 object-contain"
-                    />
-
-                    {isAuthor && (
-                        <div className="absolute right-6 top-6">
-                            <Link to={`/edit-post/${post.$id}`}>
-                                <Button bgColor="bg-green-500" className="mr-3">
-                                    Edit
-                                </Button>
-                            </Link>
-                            <Button bgColor="bg-red-500" onClick={deletePost}>
-                                Delete
-                            </Button>
-                            &nbsp;
-                            <Button bgColor="bg-blue-500" >
-                                <Link to={'/all-posts'}>
-                                    Show More
+                <div className="max-w-4xl mx-auto">
+                    {/* Hero Image Section */}
+                    <div className="relative w-full rounded-[2rem] overflow-hidden shadow-2xl mb-12 border border-white/5">
+                        <img
+                            src={appwriteService.getPreview(post.featuredImage)}
+                            alt={post.title}
+                            className="w-full h-[300px] md:h-[500px] object-cover transition-transform duration-1000 hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-60"></div>
+                        
+                        {isAuthor && (
+                            <div className="absolute right-6 top-6 flex gap-2">
+                                <Link to={`/edit-post/${post.$id}`}>
+                                    <button className="px-5 py-2.5 glass-dark text-white rounded-xl font-medium hover:bg-white/20 transition-all flex items-center gap-2">
+                                        Edit Post
+                                    </button>
                                 </Link>
-                            </Button>
+                                <button 
+                                    onClick={deletePost}
+                                    className="px-5 py-2.5 bg-red-500/10 text-red-500 border border-red-500/20 backdrop-blur-md rounded-xl font-medium hover:bg-red-500 hover:text-white transition-all"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        )}
+                    </div>
 
+                    {/* Content Section */}
+                    <div className="space-y-8">
+                        <div className="space-y-4">
+                            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white leading-[1.1]">
+                                {post.title}
+                            </h1>
+                            <div className="flex items-center gap-4 text-zinc-500 text-sm py-4 border-y border-white/5">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">
+                                        {post.userId?.charAt(0) || 'A'}
+                                    </div>
+                                    <span className="text-zinc-300 font-medium">Author</span>
+                                </div>
+                                <span className="w-1 h-1 rounded-full bg-zinc-800"></span>
+                                <span>5 min read</span>
+                            </div>
                         </div>
-                    )}
-                </div>
-                <div className="w-full mb-6">
-                    <h1 className="text-2xl font-bold">{post.title}</h1>
-                </div>
-                <div className="browser-css">
-                    {parse(post.content)}
+
+                        <div className="browser-css prose prose-invert prose-lg max-w-none text-zinc-300 leading-relaxed">
+                            {parse(post.content)}
+                        </div>
+
+                        <div className="pt-12 mt-12 border-t border-white/5">
+                            <Link to="/all-posts">
+                                <button className="text-zinc-400 hover:text-white transition-colors flex items-center gap-2 font-medium">
+                                    ← Back to all posts
+                                </button>
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </Container>
         </div>

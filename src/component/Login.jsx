@@ -5,6 +5,7 @@ import { Logo, Input, Button } from './index'
 import { useDispatch } from "react-redux"
 import authService from '../appWrite/auth'
 import { useForm } from 'react-hook-form'
+
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -33,33 +34,35 @@ const Login = () => {
         }
     }
     return (
-        <div className="flex items-center justify-center w-full ">
-            <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
-                <div className="mb-2 flex justify-center">
-                    <span className="inline-block w-full max-w-[100px]">
-                        <Logo width='100%' />
-                    </span>
+        <div className="flex items-center justify-center w-full min-h-[80vh] py-12 px-6">
+            <div className="mx-auto w-full max-w-md glass-dark rounded-[2.5rem] p-10 md:p-12 border border-white/5 shadow-2xl relative overflow-hidden group">
+                {/* Decorative Elements */}
+                <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-600/10 rounded-full blur-3xl group-hover:bg-blue-600/20 transition-all duration-700"></div>
+                <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-indigo-600/10 rounded-full blur-3xl group-hover:bg-indigo-600/20 transition-all duration-700"></div>
+
+                <div className="mb-8 flex flex-col items-center gap-4 relative">
+                    <Logo className="scale-125" />
+                    <div className="text-center space-y-1">
+                        <h2 className="text-3xl font-bold tracking-tight text-white">Welcome back</h2>
+                        <p className="text-zinc-500 text-sm">Please enter your details to sign in</p>
+                    </div>
                 </div>
-                <h2 className="text-center text-2xl font-bold leading-tight">Sign in to your account</h2>
-                <p className="mt-2 text-center text-base text-black/60">
-                    Don&apos;t have any account?&nbsp;
-                    <Link
-                        to="/signup"
-                        className="font-medium text-primary transition-all duration-200 hover:underline"
-                    >
-                        Sign Up
-                    </Link>
-                </p>
-                {error && <p className="text-red-800 mt-8 text-center">{error}</p>}
-                <form onSubmit={handleSubmit(login)}
-                    className="mt-8">
-                    <div className="space-y-5">
+
+                {error && (
+                    <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-500 text-xs font-medium text-center animate-in fade-in slide-in-from-top-2">
+                        {error}
+                    </div>
+                )}
+
+                <form onSubmit={handleSubmit(login)} className="space-y-6 relative">
+                    <div className="space-y-4">
                         <Input
-                            label='Email: '
-                            placeholder='Enter Your Email'
+                            label='Email Address'
+                            placeholder='name@example.com'
                             type='email'
+                            autoComplete="email"
                             {...register("email", {
-                                required: true,
+                                required: "Email is required",
                                 validate: {
                                     matchPattern: (val) => /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(val) || "Email address must be a valid address"
                                 }
@@ -68,28 +71,32 @@ const Login = () => {
                         <Input
                             label='Password'
                             type='password'
-                            placeholder='Enter your password'
+                            placeholder='••••••••'
+                            autoComplete="current-password"
                             {...register("password", {
-                                required: true,
-
+                                required: "Password is required",
                             })}
                         />
-                        {
-                            loading ?
-                                <Button
-                                    children="Signing In..."
-                                    className="w-full text-white"
-                                />
-                                :
-                                <Button
-                                    children="Sign In"
-                                    type="submit"
-                                    className="w-full"
-                                />
-                        }
-
                     </div>
 
+                    <Button
+                        type="submit"
+                        variant="secondary"
+                        className="w-full py-4"
+                        disabled={loading}
+                    >
+                        {loading ? 'Authenticating...' : 'Sign In'}
+                    </Button>
+
+                    <p className="text-center text-sm text-zinc-500 pt-4">
+                        Don&apos;t have an account?&nbsp;
+                        <Link
+                            to="/signup"
+                            className="font-bold text-white hover:text-blue-400 transition-colors"
+                        >
+                            Sign Up
+                        </Link>
+                    </p>
                 </form>
             </div>
         </div>

@@ -41,26 +41,31 @@ const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
-    <header className="bg-zinc-200 py-3 shadow-lg">
-    <div className="container mx-auto px-4 ">
-      <nav className="flex items-center max-md:justify-between">
+    <header className="sticky top-0 z-50 w-full glass-dark py-4 border-b border-white/5 backdrop-blur-xl">
+    <div className="container mx-auto px-6">
+      <nav className="flex items-center justify-between">
         {/* Logo Section */}
-        <div className="mr-4">
-          <Link to="/">
+        <div className="flex items-center gap-2">
+          <Link to="/" className="hover:opacity-80 transition-opacity">
             <Logo />
           </Link>
+          <span className="text-xl font-bold tracking-tighter text-gradient hidden sm:block">
+            BLOG<span className="text-white/50">APP</span>
+          </span>
         </div>
 
         {/* Desktop Navigation */}
-        <ul className="flex ml-auto space-x-4 hidden md:flex">
+        <ul className="flex items-center gap-1 hidden md:flex">
           {navItems.map(
             (item) =>
               item.active && (
                 <li key={item.name}>
                   <button
                     onClick={() => navigate(item.slug)}
-                    className={`inline-block px-6 py-2 duration-200 hover:bg-zinc-500 rounded-full font-semibold ${
-                      location.pathname === item.slug ? 'bg-blue-600 text-white' : ''
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white/10 ${
+                      location.pathname === item.slug 
+                        ? 'bg-white/10 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)]' 
+                        : 'text-zinc-400 hover:text-white'
                     }`}
                   >
                     {item.name}
@@ -69,27 +74,37 @@ const Header = () => {
               )
           )}
           {authStatus && (
-            <li>
-              <LogoutBtn />
+            <li className="ml-2 pl-2 border-l border-white/10">
+              <LogoutBtn icon={true} />
             </li>
           )}
         </ul>
 
         {/* Mobile Menu Button */}
         <div className="md:hidden">
-          <Button colorScheme="" color={'black'} onClick={onOpen}>
-            <RiMenu2Fill size={24} />
+          <Button 
+            className="p-2 bg-transparent hover:bg-white/5 rounded-full" 
+            onClick={onOpen}
+          >
+            <RiMenu2Fill size={24} className="text-white" />
           </Button>
         </div>
       </nav>
 
       {/* Drawer Component */}
-      <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
-        {/* <DrawerOverlay /> */}
-        <DrawerContent>
-          <DrawerHeader borderBottomWidth="1px"><Link to={'/'}><Logo/></Link></DrawerHeader>
-          <DrawerBody className="bg-[#f7f7f7] h-full">
-            <ul className="space-y-4 relative">
+      <Drawer placement="right" onClose={onClose} isOpen={isOpen}>
+        <DrawerOverlay className="backdrop-blur-sm bg-black/40" />
+        <DrawerContent className="bg-zinc-950/95 border-l border-white/10 text-white">
+          <DrawerHeader className="border-b border-white/5 py-6">
+            <div className="flex items-center justify-between">
+              <Link to={'/'} onClick={onClose}><Logo/></Link>
+              <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-full transition-colors">
+                <RxCross1 size={20} />
+              </button>
+            </div>
+          </DrawerHeader>
+          <DrawerBody className="py-8">
+            <ul className="space-y-2">
               {navItems.map(
                 (item) =>
                   item.active && (
@@ -99,25 +114,26 @@ const Header = () => {
                           navigate(item.slug);
                           onClose();
                         }}
-                        className="w-full text-left px-2 py-2 rounded-md hover:bg-zinc-300 font-semibold flex items-center"
+                        className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-300 ${
+                          location.pathname === item.slug 
+                            ? 'bg-white/10 text-white' 
+                            : 'text-zinc-400 hover:bg-white/5 hover:text-white'
+                        }`}
                       >
-                      {item.name}
+                        {item.name}
                       </button>
                     </li>
                   )
               )}
               {authStatus && (
-                <li className='font-bold px-1 py-2 text-red-500'>
-                  <LogoutBtn icon={false} />
+                <li className="pt-4 mt-4 border-t border-white/5">
+                  <div className="flex items-center justify-between px-4">
+                    <span className="text-sm font-medium text-zinc-500">Account</span>
+                    <LogoutBtn icon={false} />
+                  </div>
                 </li>
               )}
             </ul>
-            <button
-              className="mt-4 w-full flex justify-center items-center absolute bottom-6 left-0 right-0 "
-              onClick={onClose}
-            >
-              <RxCross1 size={30} fontSize={700}/>
-            </button>
           </DrawerBody>
         </DrawerContent>
       </Drawer>

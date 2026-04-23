@@ -34,211 +34,78 @@ function PostForm({ post }) {
     }, 100);
   };
 
-  // const submit = async (data) => {
-  //   setLoading(true);
-  //   simulateProgress();
+  const submit = async (data) => {
+    setLoading(true);
+    simulateProgress();
 
-  //   try {
-  //     let fileId = post?.featuredImage || ''; // Preserve existing image if no new image is uploaded
+    let newFileId = null;
 
-  //     if (data.image?.[0]) {
-  //       const file = await appwriteService.uploadFile(data.image[0]);
-  //       fileId = file?.$id || '';
+    try {
+        let fileId = post?.featuredImage || '';
 
-  //       if (post?.featuredImage) {
-  //         await appwriteService.deleteFile(post.featuredImage);
-  //       }
-  //     }
+        if (data.image?.[0]) {
+            const file = data.image[0];
 
-  //     const postData = {
-  //       ...data,
-  //       featuredImage: fileId,
-  //       userId: userData.$id,
-  //     };
+            if (!file.type.startsWith("image/")) {
+                throw new Error("Invalid file type. Please upload an image.");
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                throw new Error("File size exceeds 5MB. Please upload a smaller image.");
+            }
 
-  //     let dbpost;
-  //     if (post) {
-  //       dbpost = await appwriteService.updatePost(post.$id, postData);
-  //     } else {
-  //       dbpost = await appwriteService.createPost(postData);
-  //     }
+            const uploadedFile = await appwriteService.uploadFile(file);
+            newFileId = uploadedFile?.$id || '';
+            fileId = newFileId;
 
-  //     if (dbpost) {
-  //       toast({
-  //         title: 'Success',
-  //         position: 'top-right',
-  //         description: `Post ${post ? 'updated' : 'created'} successfully!`,
-  //         status: 'success',
-  //         duration: 5000,
-  //         isClosable: true,
-  //       });
-  //       navigate(`/post/${dbpost.$id}`);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error submitting post:', error);
-  //     await appwriteService.deleteFile(post.featuredImage);
-  //     toast({
-  //       title: 'Error',
-  //       position: 'top-right',
-  //       description: 'Something went wrong while submitting the post.',
-  //       status: 'error',
-  //       duration: 5000,
-  //       isClosable: true,
-  //     });
-  //   } finally {
-  //     setLoading(false);
-  //     setProgress(100);
-  //   }
-  // };
+            if (post?.featuredImage) {
+                await appwriteService.deleteFile(post.featuredImage);
+            }
+        }
 
-//   const submit = async (data) => {
-//     setLoading(true);
-//     simulateProgress();
+        const postData = {
+            ...data,
+            featuredImage: fileId,
+            userId: userData.$id,
+        };
 
-//     let newFileId = null; 
+        let dbpost;
+        if (post) {
+            dbpost = await appwriteService.updatePost(post.$id, postData);
+        } else {
+            dbpost = await appwriteService.createPost(postData);
+        }
 
-//     try {
-//         let fileId = post?.featuredImage || ''; 
+        if (dbpost) {
+            toast({
+                title: 'Success',
+                description: `Post ${post ? 'updated' : 'created'} successfully!`,
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+                position: 'top-right',
+            });
+            navigate(`/post/${dbpost.$id}`);
+        }
+    } catch (error) {
+        console.error('Error submitting post:', error);
+        if (newFileId) {
+            await appwriteService.deleteFile(newFileId);
+        }
 
-//         if (data.image?.[0]) {
-//             // Upload new image
-//             const file = await appwriteService.uploadFile(data.image[0]);
-//             newFileId = file?.$id || '';
-//             fileId = newFileId;
+        toast({
+            title: 'Error',
+            description: error.message || 'Something went wrong while submitting the post.',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            position: 'top-right',
+        });
+    } finally {
+        setLoading(false);
+        setProgress(100);
+    }
+  };
 
-//             // Delete old image only after successful upload
-//             if (post?.featuredImage) {
-//                 await appwriteService.deleteFile(post.featuredImage);
-//             }
-//         }
-
-//         const postData = {
-//             ...data,
-//             featuredImage: fileId,
-//             userId: userData.$id,
-//         };
-
-//         let dbpost;
-//         if (post) {
-//             dbpost = await appwriteService.updatePost(post.$id, postData);
-//         } else {
-//             dbpost = await appwriteService.createPost(postData);
-//         }
-
-//         if (dbpost) {
-//             toast({
-//                 title: 'Success',
-//                 position: 'top-right',
-//                 description: `Post ${post ? 'updated' : 'created'} successfully!`,
-//                 status: 'success',
-//                 duration: 5000,
-//                 isClosable: true,
-//             });
-//             navigate(`/post/${dbpost.$id}`);
-//         }
-//     } catch (error) {
-//         console.error('Error submitting post:', error);
-
-//         // If a new image was uploaded but post creation failed, delete it
-//         if (newFileId) {
-//             await appwriteService.deleteFile(newFileId);
-//         }
-
-//         toast({
-//             title: 'Error',
-//             position: 'top-right',
-//             description: `Something went wrong while submitting the post.${error}`,
-//             status: 'error',
-//             duration: 5000,
-//             isClosable: true,
-//         });
-//     } finally {
-//         setLoading(false);
-//         setProgress(100);
-//     }
-// };
-
-const submit = async (data) => {
-  setLoading(true);
-  simulateProgress();
-
-  let newFileId = null; // Track new uploaded file ID
-
-  try {
-      let fileId = post?.featuredImage || ''; // Preserve existing image if no new image is uploaded
-
-      if (data.image?.[0]) {
-          const file = data.image[0];
-
-          // Debugging: Check file properties
-          console.log("File Selected:", file);
-          console.log("File Type:", file.type);
-          console.log("File Size:", file.size);
-
-          // Validate file before uploading
-          if (!file.type.startsWith("image/")) {
-              throw new Error("Invalid file type. Please upload an image.");
-          }
-          if (file.size > 5 * 1024 * 1024) {
-              throw new Error("File size exceeds 5MB. Please upload a smaller image.");
-          }
-
-          // Upload new image
-          const uploadedFile = await appwriteService.uploadFile(file);
-          newFileId = uploadedFile?.$id || '';
-          fileId = newFileId;
-
-          // Delete old image only after successful upload
-          if (post?.featuredImage) {
-              await appwriteService.deleteFile(post.featuredImage);
-          }
-      }
-
-      const postData = {
-          ...data,
-          featuredImage: fileId,
-          userId: userData.$id,
-      };
-
-      let dbpost;
-      if (post) {
-          dbpost = await appwriteService.updatePost(post.$id, postData);
-      } else {
-          dbpost = await appwriteService.createPost(postData);
-      }
-
-      if (dbpost) {
-          toast({
-              title: 'Success',
-              position: 'top-right',
-              description: `Post ${post ? 'updated' : 'created'} successfully!`,
-              status: 'success',
-              duration: 5000,
-              isClosable: true,
-          });
-          navigate(`/post/${dbpost.$id}`);
-      }
-  } catch (error) {
-      console.error('Error submitting post:', error);
-
-      // If a new image was uploaded but post creation failed, delete it
-      if (newFileId) {
-          await appwriteService.deleteFile(newFileId);
-      }
-
-      toast({
-          title: 'Error',
-          position: 'top-right',
-          description: error.message || 'Something went wrong while submitting the post.',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-      });
-  } finally {
-      setLoading(false);
-      setProgress(100);
-  }
-};
   const slugTransform = useCallback((value) => {
     return value
       ?.trim()
@@ -257,65 +124,95 @@ const submit = async (data) => {
   }, [watch, slugTransform, setValue]);
 
   return (
-    <div className="relative">
+    <div className="relative py-8">
       {loading && (
-        <div
-          className="fixed top-0 left-0 h-1 bg-blue-500 transition-all duration-300 z-50"
-          style={{ width: `${progress}%` }}
-        ></div>
+        <div className="fixed top-0 left-0 w-full h-1.5 bg-blue-600/20 z-[60]">
+          <div
+            className="h-full bg-blue-600 transition-all duration-300 shadow-[0_0_10px_rgba(37,99,235,0.5)]"
+            style={{ width: `${progress}%` }}
+          ></div>
+        </div>
       )}
 
-      <form onSubmit={handleSubmit(submit)} className="flex flex-wrap md:flex-nowrap">
-        <div className="w-full md:w-2/3 px-2">
-          <Input
-            label="Title :"
-            placeholder="Title"
-            className="mb-4"
-            {...register('title', { required: true })}
-          />
-          <Input
-            label="Slug :"
-            placeholder="Slug"
-            className="mb-4"
-            {...register('slug', { required: true })}
-            onInput={(e) => {
-              setValue('slug', slugTransform(e.currentTarget.value), { shouldValidate: true });
-            }}
-          />
-          <RTE label="Content :" name="content" control={control} defaultValue={getValues('content')} />
+      <form onSubmit={handleSubmit(submit)} className="flex flex-wrap lg:flex-nowrap gap-8">
+        <div className="w-full lg:w-2/3 space-y-6">
+          <div className="glass-dark p-8 rounded-[2rem] border border-white/5 space-y-6">
+            <Input
+              label="Title"
+              placeholder="Give your story a title..."
+              {...register('title', { required: true })}
+            />
+            <Input
+              label="Slug"
+              placeholder="url-slug"
+              {...register('slug', { required: true })}
+              onInput={(e) => {
+                setValue('slug', slugTransform(e.currentTarget.value), { shouldValidate: true });
+              }}
+            />
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-zinc-400 ml-1">Content</label>
+              <RTE name="content" control={control} defaultValue={getValues('content')} />
+            </div>
+          </div>
         </div>
 
-        <div className="w-full md:w-1/3 px-2 mt-6 md:mt-0">
-          <Input
-            label="Featured Image :"
-            type="file"
-            className="mb-4"
-            accept="image/png, image/jpg, image/jpeg, image/gif"
-            {...register('image')}
-          />
-          {post?.featuredImage && (
-            <div className="w-full mb-4">
-              <img
-                src={appwriteService.getPreview(post.featuredImage)}
-                alt={post.title}
-                className="rounded-lg w-full"
-              />
+        <div className="w-full lg:w-1/3 space-y-6">
+          <div className="glass-dark p-8 rounded-[2rem] border border-white/5 space-y-6">
+            <div className="space-y-4">
+              <label className="text-sm font-medium text-zinc-400 ml-1">Cover Image</label>
+              <div className="relative group">
+                <Input
+                  type="file"
+                  className="hidden"
+                  id="image-upload"
+                  accept="image/png, image/jpg, image/jpeg, image/gif"
+                  {...register('image')}
+                />
+                <label 
+                  htmlFor="image-upload" 
+                  className="flex flex-col items-center justify-center w-full aspect-video rounded-2xl border-2 border-dashed border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer overflow-hidden p-2"
+                >
+                  {post?.featuredImage ? (
+                    <img
+                      src={appwriteService.getPreview(post.featuredImage)}
+                      alt="Preview"
+                      className="w-full h-full object-cover rounded-xl"
+                    />
+                  ) : (
+                    <div className="text-center space-y-2">
+                      <span className="text-3xl">🖼️</span>
+                      <p className="text-xs text-zinc-500 font-medium tracking-wide">CLICK TO UPLOAD COVER</p>
+                    </div>
+                  )}
+                </label>
+              </div>
             </div>
-          )}
-          <Select
-            options={['active', 'inactive']}
-            label="Status"
-            className="mb-4"
-            {...register('status', { required: true })}
-          />
-          <Button
-            type="submit"
-            bgColor={post ? 'bg-green-500' : 'bg-blue-700'}
-            className="w-full border"
-            disabled={loading}
-          >
-            {loading ? 'Submitting...' : post ? 'Update' : 'Submit'}
-          </Button>
+
+            <Select
+              options={['active', 'inactive']}
+              label="Publish Status"
+              {...register('status', { required: true })}
+            />
+
+            <Button
+              type="submit"
+              variant={post ? 'primary' : 'secondary'}
+              className="w-full py-4 text-base"
+              disabled={loading}
+            >
+              {loading ? 'Processing...' : post ? 'Update Post' : 'Publish Story'}
+            </Button>
+          </div>
+          
+          <div className="glass-dark p-6 rounded-[2rem] border border-white/5">
+            <h4 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-4">Tips</h4>
+            <ul className="text-xs text-zinc-400 space-y-3">
+              <li className="flex gap-2"><span>•</span> Use a catchy title and high quality image.</li>
+              <li className="flex gap-2"><span>•</span> The slug is generated automatically but can be edited.</li>
+              <li className="flex gap-2"><span>•</span> Max image size is 5MB.</li>
+            </ul>
+          </div>
         </div>
       </form>
     </div>

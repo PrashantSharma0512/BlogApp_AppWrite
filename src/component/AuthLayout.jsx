@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import Loader from '../utils/PulseLoader'
 
 export default function Protected({children,authentication=true}){
 
@@ -17,6 +18,10 @@ export default function Protected({children,authentication=true}){
     }, [authStatus,navigate,authentication])
     
   return (
-    loader ? <h1>Loading...</h1> : <>{children}</>
+    loader ? (
+        <div className="flex items-center justify-center min-h-[50vh]">
+            <Loader />
+        </div>
+    ) : <>{children}</>
   )
 }

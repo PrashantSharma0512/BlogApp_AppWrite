@@ -19,11 +19,11 @@ const StyledWrapper = styled.div`
   .loading {
    --speed-of-animation: 0.9s;
    --gap: 6px;
-   --first-color: #4c86f9;
-   --second-color: #49a84c;
-   --third-color: #f6bb02;
-   --fourth-color: #f6bb02;
-   --fifth-color: #2196f3;
+   --first-color: #2563eb;
+   --second-color: #4f46e5;
+   --third-color: #6366f1;
+   --fourth-color: #818cf8;
+   --fifth-color: #3b82f6;
    display: flex;
    justify-content: center;
    align-items: center;

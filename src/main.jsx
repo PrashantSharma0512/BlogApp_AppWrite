@@ -8,6 +8,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { AuthLayout } from './component/index.js'
 import NotFound from './utils/NotFound.jsx'
 
+import Loader from './utils/PulseLoader.jsx'
+
 // Lazy load components
 const Home = lazy(() => import('./pages/Home.jsx'));
 const AddPost = lazy(() => import('./pages/AddPost.jsx'));
@@ -24,13 +26,13 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Suspense fallback={<div>Loading...</div>}><Home /></Suspense>,
+                element: <Suspense fallback={<div className="flex h-[70vh] items-center justify-center"><Loader /></div>}><Home /></Suspense>,
             },
             {
                 path: "/login",
                 element: (
                     <AuthLayout authentication={false}>
-                        <Suspense fallback={<div>Loading...</div>}><Login /></Suspense>
+                        <Suspense fallback={<div className="flex h-[70vh] items-center justify-center"><Loader /></div>}><Login /></Suspense>
                     </AuthLayout>
                 ),
             },
@@ -38,7 +40,7 @@ const router = createBrowserRouter([
                 path: "/signup",
                 element: (
                     <AuthLayout authentication={false}>
-                        <Suspense fallback={<div>Loading...</div>}><Signup /></Suspense>
+                        <Suspense fallback={<div className="flex h-[70vh] items-center justify-center"><Loader /></div>}><Signup /></Suspense>
                     </AuthLayout>
                 ),
             },
@@ -46,7 +48,7 @@ const router = createBrowserRouter([
                 path: "/all-posts",
                 element: (
                     <AuthLayout authentication>
-                        <Suspense fallback={<div>Loading...</div>}><AllPost /></Suspense>
+                        <Suspense fallback={<div className="flex h-[70vh] items-center justify-center"><Loader /></div>}><AllPost /></Suspense>
                     </AuthLayout>
                 ),
             },
@@ -54,7 +56,7 @@ const router = createBrowserRouter([
                 path: "/add-post",
                 element: (
                     <AuthLayout authentication>
-                        <Suspense fallback={<div>Loading...</div>}><AddPost /></Suspense>
+                        <Suspense fallback={<div className="flex h-[70vh] items-center justify-center"><Loader /></div>}><AddPost /></Suspense>
                     </AuthLayout>
                 ),
             },
@@ -62,13 +64,13 @@ const router = createBrowserRouter([
                 path: "/edit-post/:slug",
                 element: (
                     <AuthLayout authentication>
-                        <Suspense fallback={<div>Loading...</div>}><EditPost /></Suspense>
+                        <Suspense fallback={<div className="flex h-[70vh] items-center justify-center"><Loader /></div>}><EditPost /></Suspense>
                     </AuthLayout>
                 ),
             },
             {
                 path: "/post/:slug",
-                element: <Suspense fallback={<div>Loading...</div>}><Post /></Suspense>,
+                element: <Suspense fallback={<div className="flex h-[70vh] items-center justify-center"><Loader /></div>}><Post /></Suspense>,
             }
         ],
     },

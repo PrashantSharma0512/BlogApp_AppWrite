@@ -1,3 +1,82 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border) / 0.1);
+  }
+  body {
+    @apply bg-zinc-950 text-foreground selection:bg-white selection:text-black;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    scroll-behavior: smooth;
+  }
+}
+
+.glass {
+  @apply bg-white/5 backdrop-blur-md border border-white/10;
+}
+
+.glass-dark {
+  @apply bg-black/40 backdrop-blur-xl border border-white/5;
+}
+
+.mesh-gradient {
+  background-color: hsla(240, 10%, 4%, 1);
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(220, 100%, 10%, 0.5) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(280, 100%, 10%, 0.5) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, hsla(240, 10%, 4%, 1) 0px, transparent 80%);
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-white/80 to-zinc-500;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-zinc-950;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-zinc-800 rounded-full hover:bg-zinc-700 transition-colors;
+}
+
+/* Browser CSS for RTE content */
+.browser-css h1 { @apply text-4xl font-bold mb-4; }
+.browser-css h2 { @apply text-3xl font-bold mb-3; }
+.browser-css h3 { @apply text-2xl font-bold mb-2; }
+.browser-css p { @apply mb-4 leading-relaxed text-zinc-300; }
+.browser-css ul { @apply list-disc ml-6 mb-4; }
+.browser-css ol { @apply list-decimal ml-6 mb-4; }
+.browser-css a { @apply text-blue-400 hover:underline; }
+.browser-css img { @apply rounded-xl max-w-full h-auto my-6; }

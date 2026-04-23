@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { Button, Logo, Input } from './index'
 import authService from '../appWrite/auth'
 import { login } from '../store/authSlice'
+
 const SignUp = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -30,68 +31,80 @@ const SignUp = () => {
         }
     }
     return (
-        <div className="flex items-center justify-center">
-            <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
-                <div className="mb-2 flex justify-center">
-                    <span className="inline-block w-full max-w-[100px]">
-                        <Logo width="100%" />
-                    </span>
+        <div className="flex items-center justify-center w-full min-h-[80vh] py-12 px-6">
+            <div className="mx-auto w-full max-w-md glass-dark rounded-[2.5rem] p-10 md:p-12 border border-white/5 shadow-2xl relative overflow-hidden group">
+                {/* Decorative Elements */}
+                <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-600/10 rounded-full blur-3xl group-hover:bg-blue-600/20 transition-all duration-700"></div>
+                <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-indigo-600/10 rounded-full blur-3xl group-hover:bg-indigo-600/20 transition-all duration-700"></div>
+
+                <div className="mb-8 flex flex-col items-center gap-4 relative">
+                    <Logo className="scale-125" />
+                    <div className="text-center space-y-1">
+                        <h2 className="text-3xl font-bold tracking-tight text-white">Create Account</h2>
+                        <p className="text-zinc-500 text-sm">Join our community of creators today</p>
+                    </div>
                 </div>
-                <h2 className="text-center text-2xl font-bold leading-tight">Sign up to create account</h2>
-                <p className="mt-2 text-center text-base text-black/60">
-                    Already have an account?&nbsp;
-                    <Link
-                        to="/login"
-                        className="font-medium text-primary transition-all duration-200 hover:underline"
-                    >
-                        Sign In
-                    </Link>
-                </p>
-                {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
-                <form onSubmit={handleSubmit(createAcc)}>
-                    <div className='space-y-5'>
+
+                {error && (
+                    <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-500 text-xs font-medium text-center animate-in fade-in slide-in-from-top-2">
+                        {error}
+                    </div>
+                )}
+
+                <form onSubmit={handleSubmit(createAcc)} className="space-y-6 relative">
+                    <div className="space-y-4">
                         <Input
-                            label="Full Name: "
-                            placeholder="Enter your full name"
+                            label="Full Name"
+                            placeholder="John Doe"
+                            autoComplete="name"
                             {...register("name", {
-                                required: true,
+                                required: "Full name is required",
                             })}
                         />
                         <Input
-                            label="Email: "
-                            placeholder="Enter your email"
+                            label="Email Address"
+                            placeholder="name@example.com"
                             type="email"
+                            autoComplete="email"
                             {...register("email", {
-                                required: true,
+                                required: "Email is required",
                                 validate: {
-                                    matchPatern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/g.test(value) ||
+                                    matchPattern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/g.test(value) ||
                                         "Email address must be a valid address",
                                 }
                             })}
                         />
                         <Input
-                            label="Password: "
+                            label="Password"
                             type="password"
-                            placeholder="Enter your password"
+                            placeholder="••••••••"
+                            autoComplete="new-password"
                             {...register("password", {
-                                required: true,
+                                required: "Password is required",
                             })}
                         />
-                        {
-                            loading ?
-                                <Button className="w-full">
-                                    Creating Account...
-                                </Button>
-                                :
-                                <Button type="submit" className="w-full">
-                                    Create Account
-                                </Button>
-                        }
-
                     </div>
+
+                    <Button
+                        type="submit"
+                        variant="secondary"
+                        className="w-full py-4 text-base"
+                        disabled={loading}
+                    >
+                        {loading ? 'Creating Account...' : 'Create Account'}
+                    </Button>
+
+                    <p className="text-center text-sm text-zinc-500 pt-4">
+                        Already have an account?&nbsp;
+                        <Link
+                            to="/login"
+                            className="font-bold text-white hover:text-blue-400 transition-colors"
+                        >
+                            Sign In
+                        </Link>
+                    </p>
                 </form>
             </div>
-
         </div>
     )
 }

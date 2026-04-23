@@ -24,45 +24,66 @@ const PostCard = ({ $id, title, featuredImage, $createdAt, content }) => {
 
   return (
     <Link to={`/post/${$id}`}>
-      <div className="max-w-md min-h-[60vh] mx-auto bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 text-white transform hover:-translate-y-2 max-md:w-[65vw] max-md:h-[70vh] ">
+      <div className="group relative glass-dark rounded-3xl overflow-hidden hover:bg-white/[0.07] transition-all duration-500 border border-white/5 hover:border-white/10 shadow-2xl">
         
         {/* Image Container */}
-        <div className="relative w-full h-56 overflow-hidden">
+        <div className="relative aspect-video overflow-hidden">
           {!imageLoaded && (
-            <div className="absolute inset-0 bg-gray-700 animate-pulse"></div>
+            <div className="absolute inset-0 bg-white/5 animate-pulse"></div>
           )}
           <img
-            className={`h-full w-full object-cover rounded-t-3xl transition-transform duration-300 hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+            className={`h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
             src={appwriteService.getPreview(featuredImage)}
-            alt="Post"
+            alt={title}
             loading="lazy"
             onLoad={() => setImageLoaded(true)}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
-          <span className={`absolute bottom-3 left-3 ${isOlderThanOneWeek() ? 'bg-blue-600' : 'bg-red-600'} text-xs font-semibold uppercase px-3 py-1 rounded-full shadow-md`}>
-            {isOlderThanOneWeek() ? "Featured" : "New Post"}
-          </span>
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-60"></div>
+          
+          <div className="absolute top-4 left-4 flex gap-2">
+            <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider backdrop-blur-md ${isOlderThanOneWeek() ? 'bg-zinc-500/20 text-zinc-300' : 'bg-blue-500/20 text-blue-400 border border-blue-500/20'}`}>
+              {isOlderThanOneWeek() ? "Featured" : "New Post"}
+            </span>
+          </div>
         </div>
 
         {/* Post Content */}
         <div className="p-6">
-          <h2 className="text-2xl font-bold text-gray-100 leading-tight uppercase tracking-wide hover:text-red-500 transition-colors duration-200">
-            {title}
-          </h2>
-          <p className="text-gray-300 text-sm line-clamp-3 capitalize leading-relaxed truncate" style={{ maxWidth: "220px" }}>
-            <Tooltip color={'black'} bgColor={'#f7f7f7'} maxW={'200px'} rounded={'4px'} p={1} label={content?.replace(/<\/?[^>]+>/g, "").replace(/&nbsp;/g, " ").trim() || "No content available"} aria-label="Post content tooltip">
+          <div className="flex justify-between items-start mb-3">
+             <h2 className="text-xl font-bold text-white leading-tight group-hover:text-blue-400 transition-colors duration-300 line-clamp-2">
+              {title}
+            </h2>
+          </div>
+
+          <div className="text-zinc-500 text-sm line-clamp-2 mb-6 min-h-[40px]">
+            <Tooltip 
+              hasArrow 
+              label={content?.replace(/<\/?[^>]+>/g, "").replace(/&nbsp;/g, " ").trim() || "No content available"}
+              bg="zinc.800"
+              color="white"
+              borderRadius="xl"
+              px={4}
+              py={2}
+            >
               <span>
                 {content?.replace(/<\/?[^>]+>/g, "").replace(/&nbsp;/g, "").trim() || "No content available"}
               </span>
             </Tooltip>
-          </p>
-          <p className="text-sm text-red-400 mt-4 font-medium">Posted on: {date}</p>
-          <div className="mt-6 flex justify-between items-center">
-            <button className="px-6 py-3 text-sm font-semibold text-black bg-gradient-to-r from-red-500 to-yellow-500 rounded-full shadow-lg hover:shadow-xl hover:from-red-600 hover:to-yellow-600 transition-transform transform hover:scale-105">
-              Read More
-            </button>
-            <div className="flex items-center text-gray-400 text-xs space-x-2">
-              <PiShareFatFill size={30} />
+          </div>
+
+          <div className="flex items-center justify-between pt-4 border-t border-white/5">
+            <div className="flex flex-col">
+              <span className="text-[10px] uppercase tracking-widest text-zinc-600 font-bold">Published</span>
+              <span className="text-xs text-zinc-400 font-medium">{date}</span>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <button className="p-2 rounded-full hover:bg-white/5 text-zinc-500 hover:text-white transition-all">
+                <PiShareFatFill size={18} />
+              </button>
+              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-[10px] font-bold text-white shadow-lg shadow-blue-600/20">
+                {title.charAt(0)}
+              </div>
             </div>
           </div>
         </div>
