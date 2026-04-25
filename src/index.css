@@ -4,26 +4,26 @@
 
 @layer base {
   :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --background: 222 47% 4%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 6%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 4%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 38 92% 50%;
+    --primary-foreground: 222 47% 4%;
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 32% 15%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 32% 17%;
+    --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --radius: 0.75rem;
+    --border: 217 32% 17%;
+    --input: 217 32% 17%;
+    --ring: 38 92% 50%;
+    --radius: 1rem;
   }
 }
 
@@ -32,7 +32,7 @@
     border-color: hsl(var(--border) / 0.1);
   }
   body {
-    @apply bg-zinc-950 text-foreground selection:bg-white selection:text-black;
+    @apply bg-background text-foreground selection:bg-primary selection:text-primary-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
     scroll-behavior: smooth;
   }
@@ -47,15 +47,15 @@
 }
 
 .mesh-gradient {
-  background-color: hsla(240, 10%, 4%, 1);
+  background-color: hsl(var(--background));
   background-image: 
-    radial-gradient(at 0% 0%, hsla(220, 100%, 10%, 0.5) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, hsla(280, 100%, 10%, 0.5) 0px, transparent 50%),
-    radial-gradient(at 50% 50%, hsla(240, 10%, 4%, 1) 0px, transparent 80%);
+    radial-gradient(at 0% 0%, hsla(222, 47%, 15%, 0.5) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(38, 92%, 10%, 0.4) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, hsl(var(--background)) 0px, transparent 80%);
 }
 
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-white/80 to-zinc-500;
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-white/90 to-primary/50;
 }
 
 /* Custom scrollbar */
@@ -64,18 +64,18 @@
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-zinc-950;
+  @apply bg-background;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-zinc-800 rounded-full hover:bg-zinc-700 transition-colors;
+  @apply bg-secondary rounded-full hover:bg-muted-foreground/30 transition-colors;
 }
 
 /* Browser CSS for RTE content */
 .browser-css h1 { @apply text-4xl font-bold mb-4; }
 .browser-css h2 { @apply text-3xl font-bold mb-3; }
 .browser-css h3 { @apply text-2xl font-bold mb-2; }
-.browser-css p { @apply mb-4 leading-relaxed text-zinc-300; }
+.browser-css p { @apply mb-4 leading-relaxed text-slate-300; }
 .browser-css ul { @apply list-disc ml-6 mb-4; }
 .browser-css ol { @apply list-decimal ml-6 mb-4; }
 .browser-css a { @apply text-blue-400 hover:underline; }

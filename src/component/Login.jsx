@@ -37,14 +37,14 @@ const Login = () => {
         <div className="flex items-center justify-center w-full min-h-[80vh] py-12 px-6">
             <div className="mx-auto w-full max-w-md glass-dark rounded-[2.5rem] p-10 md:p-12 border border-white/5 shadow-2xl relative overflow-hidden group">
                 {/* Decorative Elements */}
-                <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-600/10 rounded-full blur-3xl group-hover:bg-blue-600/20 transition-all duration-700"></div>
-                <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-indigo-600/10 rounded-full blur-3xl group-hover:bg-indigo-600/20 transition-all duration-700"></div>
+                <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-all duration-700"></div>
+                <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-all duration-700"></div>
 
                 <div className="mb-8 flex flex-col items-center gap-4 relative">
                     <Logo className="scale-125" />
                     <div className="text-center space-y-1">
                         <h2 className="text-3xl font-bold tracking-tight text-white">Welcome back</h2>
-                        <p className="text-zinc-500 text-sm">Please enter your details to sign in</p>
+                        <p className="text-muted-foreground text-sm">Please enter your details to sign in</p>
                     </div>
                 </div>
 
@@ -81,18 +81,18 @@ const Login = () => {
 
                     <Button
                         type="submit"
-                        variant="secondary"
+                        variant="primary"
                         className="w-full py-4"
                         disabled={loading}
                     >
                         {loading ? 'Authenticating...' : 'Sign In'}
                     </Button>
 
-                    <p className="text-center text-sm text-zinc-500 pt-4">
+                    <p className="text-center text-sm text-muted-foreground pt-4">
                         Don&apos;t have an account?&nbsp;
                         <Link
                             to="/signup"
-                            className="font-bold text-white hover:text-blue-400 transition-colors"
+                            className="font-bold text-white hover:text-primary transition-colors"
                         >
                             Sign Up
                         </Link>

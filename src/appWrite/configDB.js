@@ -137,10 +137,16 @@ export class Service {
 
     getPreview(fileId) {
         if (!fileId) {
-            throw new Error("File ID is required.");
+            return ""; // Return empty string if no fileId
         }
 
-        return this.bucket.getFilePreview(config.appwriteBucketId, fileId);
+        try {
+            const previewUrl = this.bucket.getFilePreview(config.appwriteBucketId, fileId);
+            return previewUrl.href || previewUrl; // Return href if it's a URL object, else return as is
+        } catch (error) {
+            console.error("Appwrite service :: getPreview :: error", error);
+            return "";
+        }
     }
 
     getDownload(fileId) {

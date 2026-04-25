@@ -31,8 +31,8 @@ function AllPost() {
                 <div className="flex flex-col gap-10">
                     <div className="space-y-4">
                         <h1 className="text-4xl font-bold text-white tracking-tight">Explore All Stories</h1>
-                        <p className="text-zinc-500">Discover perspectives from creators around the world.</p>
-                        <div className="h-1.5 w-20 bg-blue-600 rounded-full"></div>
+                        <p className="text-muted-foreground">Discover perspectives from creators around the world.</p>
+                        <div className="h-1.5 w-20 bg-primary rounded-full"></div>
                     </div>
 
                     {loading ? (
@@ -47,7 +47,7 @@ function AllPost() {
                         </div>
                     ) : (
                         <div className="text-center py-20 glass-dark rounded-[2rem] border border-white/5">
-                            <p className="text-zinc-500">No posts found yet.</p>
+                            <p className="text-muted-foreground">No posts found yet.</p>
                         </div>
                     )}
                 </div>

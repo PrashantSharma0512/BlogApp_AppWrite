@@ -126,9 +126,9 @@ function PostForm({ post }) {
   return (
     <div className="relative py-8">
       {loading && (
-        <div className="fixed top-0 left-0 w-full h-1.5 bg-blue-600/20 z-[60]">
+        <div className="fixed top-0 left-0 w-full h-1.5 bg-primary/20 z-[60]">
           <div
-            className="h-full bg-blue-600 transition-all duration-300 shadow-[0_0_10px_rgba(37,99,235,0.5)]"
+            className="h-full bg-primary transition-all duration-300 shadow-[0_0_10px_rgba(245,158,11,0.5)]"
             style={{ width: `${progress}%` }}
           ></div>
         </div>
@@ -151,7 +151,7 @@ function PostForm({ post }) {
               }}
             />
             <div className="space-y-2">
-              <label className="text-sm font-medium text-zinc-400 ml-1">Content</label>
+              <label className="text-sm font-medium text-muted-foreground ml-1">Content</label>
               <RTE name="content" control={control} defaultValue={getValues('content')} />
             </div>
           </div>
@@ -160,7 +160,7 @@ function PostForm({ post }) {
         <div className="w-full lg:w-1/3 space-y-6">
           <div className="glass-dark p-8 rounded-[2rem] border border-white/5 space-y-6">
             <div className="space-y-4">
-              <label className="text-sm font-medium text-zinc-400 ml-1">Cover Image</label>
+              <label className="text-sm font-medium text-muted-foreground ml-1">Cover Image</label>
               <div className="relative group">
                 <Input
                   type="file"
@@ -174,15 +174,22 @@ function PostForm({ post }) {
                   className="flex flex-col items-center justify-center w-full aspect-video rounded-2xl border-2 border-dashed border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer overflow-hidden p-2"
                 >
                   {post?.featuredImage ? (
-                    <img
-                      src={appwriteService.getPreview(post.featuredImage)}
-                      alt="Preview"
-                      className="w-full h-full object-cover rounded-xl"
-                    />
+                    <div className="w-full h-full relative">
+                      <img
+                        src={appwriteService.getPreview(post.featuredImage)}
+                        alt="Preview"
+                        className="w-full h-full object-cover rounded-xl"
+                      />
+                      {!appwriteService.getPreview(post.featuredImage) && (
+                         <div className="absolute inset-0 flex items-center justify-center bg-secondary rounded-xl">
+                            <span className="text-muted-foreground text-xs">Image not found</span>
+                         </div>
+                      )}
+                    </div>
                   ) : (
                     <div className="text-center space-y-2">
                       <span className="text-3xl">🖼️</span>
-                      <p className="text-xs text-zinc-500 font-medium tracking-wide">CLICK TO UPLOAD COVER</p>
+                      <p className="text-xs text-muted-foreground font-medium tracking-wide">CLICK TO UPLOAD COVER</p>
                     </div>
                   )}
                 </label>
@@ -197,7 +204,7 @@ function PostForm({ post }) {
 
             <Button
               type="submit"
-              variant={post ? 'primary' : 'secondary'}
+              variant="primary"
               className="w-full py-4 text-base"
               disabled={loading}
             >
@@ -206,8 +213,8 @@ function PostForm({ post }) {
           </div>
           
           <div className="glass-dark p-6 rounded-[2rem] border border-white/5">
-            <h4 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-4">Tips</h4>
-            <ul className="text-xs text-zinc-400 space-y-3">
+            <h4 className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest mb-4">Tips</h4>
+            <ul className="text-xs text-muted-foreground space-y-3">
               <li className="flex gap-2"><span>•</span> Use a catchy title and high quality image.</li>
               <li className="flex gap-2"><span>•</span> The slug is generated automatically but can be edited.</li>
               <li className="flex gap-2"><span>•</span> Max image size is 5MB.</li>

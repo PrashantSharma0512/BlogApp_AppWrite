@@ -50,7 +50,7 @@ const Header = () => {
             <Logo />
           </Link>
           <span className="text-xl font-bold tracking-tighter text-gradient hidden sm:block">
-            BLOG<span className="text-white/50">APP</span>
+            BLOG<span className="text-primary/50">APP</span>
           </span>
         </div>
 
@@ -62,10 +62,10 @@ const Header = () => {
                 <li key={item.name}>
                   <button
                     onClick={() => navigate(item.slug)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white/10 ${
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-primary/10 ${
                       location.pathname === item.slug 
-                        ? 'bg-white/10 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)]' 
-                        : 'text-zinc-400 hover:text-white'
+                        ? 'bg-primary/10 text-primary shadow-[0_0_15px_rgba(245,158,11,0.1)]' 
+                        : 'text-muted-foreground hover:text-white'
                     }`}
                   >
                     {item.name}
@@ -94,7 +94,7 @@ const Header = () => {
       {/* Drawer Component */}
       <Drawer placement="right" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay className="backdrop-blur-sm bg-black/40" />
-        <DrawerContent className="bg-zinc-950/95 border-l border-white/10 text-white">
+        <DrawerContent className="bg-background/95 border-l border-white/10 text-white">
           <DrawerHeader className="border-b border-white/5 py-6">
             <div className="flex items-center justify-between">
               <Link to={'/'} onClick={onClose}><Logo/></Link>
@@ -116,8 +116,8 @@ const Header = () => {
                         }}
                         className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-300 ${
                           location.pathname === item.slug 
-                            ? 'bg-white/10 text-white' 
-                            : 'text-zinc-400 hover:bg-white/5 hover:text-white'
+                            ? 'bg-primary/10 text-primary' 
+                            : 'text-muted-foreground hover:bg-primary/5 hover:text-white'
                         }`}
                       >
                         {item.name}
@@ -128,7 +128,7 @@ const Header = () => {
               {authStatus && (
                 <li className="pt-4 mt-4 border-t border-white/5">
                   <div className="flex items-center justify-between px-4">
-                    <span className="text-sm font-medium text-zinc-500">Account</span>
+                    <span className="text-sm font-medium text-muted-foreground/60">Account</span>
                     <LogoutBtn icon={false} />
                   </div>
                 </li>

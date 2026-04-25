@@ -9,11 +9,11 @@ const Button = ({
     ...props
 }) => {
   const variants = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-600/20',
-    secondary: 'bg-white text-black hover:bg-zinc-200 shadow-xl shadow-white/5',
-    outline: 'bg-transparent border border-white/10 text-white hover:bg-white/5',
-    ghost: 'bg-transparent text-zinc-400 hover:text-white hover:bg-white/5',
-    glass: 'glass-dark border border-white/5 text-white hover:bg-white/10'
+    primary: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20',
+    secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-xl shadow-black/20',
+    outline: 'bg-transparent border border-border text-foreground hover:bg-accent hover:text-accent-foreground',
+    ghost: 'bg-transparent text-muted-foreground hover:text-foreground hover:bg-accent',
+    glass: 'glass-dark border border-white/5 text-foreground hover:bg-white/10'
   }
 
   const activeVariant = variants[variant] || variants.primary

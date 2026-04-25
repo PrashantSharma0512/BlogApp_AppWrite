@@ -27,7 +27,7 @@ function App() {
 
   return !loading ? (
     <ChakraProvider>
-      <div className='min-h-screen mesh-gradient selection:bg-blue-500/30'>
+      <div className='min-h-screen mesh-gradient selection:bg-primary/30'>
         <div className='w-full flex flex-col'>
           <Header />
           <main className='flex-grow animate-in fade-in slide-in-from-bottom-4 duration-1000'>
@@ -38,7 +38,7 @@ function App() {
       </div>
     </ChakraProvider>
   ) : (
-    <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+    <div className="min-h-screen bg-background flex items-center justify-center">
       <Loader />
     </div>
   )

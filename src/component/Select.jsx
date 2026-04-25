@@ -8,22 +8,36 @@ const Select = ({
 }, ref) => {
     const id = useId();
     return (
-        <div className='w-full'>
-            {label && <label htmlFor={id} className='' ></label>}
+        <div className='w-full space-y-2'>
+            {label && (
+                <label 
+                    className='block ml-1 text-sm font-semibold text-muted-foreground tracking-wide uppercase'
+                    htmlFor={id}
+                >
+                    {label}
+                </label>
+            )}
             <select
                 ref={ref}
                 id={id}
                 {...props}
-                className={`px-3 py-2 rounded-lg bg-white text-black outline-none focus:ng-gray-50 duration-200 border-gray-200 w-full ${className}`}
+                className={`
+                    px-5 py-4 rounded-2xl bg-white/5 text-white outline-none 
+                    focus:ring-2 focus:ring-primary/50 focus:bg-white/[0.08] 
+                    duration-300 border border-white/5 w-full 
+                    transition-all active:scale-[0.99] appearance-none cursor-pointer
+                    ${className}
+                `}
             >
-                {options?.map((option) => {
-                    return (<option
+                {options?.map((option) => (
+                    <option
+                        className='bg-secondary text-white'
                         key={option}
                         value={option}
                     >
                         {option}
-                    </option>)
-                })}
+                    </option>
+                ))}
             </select>
         </div>
     )

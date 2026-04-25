@@ -14,14 +14,14 @@ const NotFound = () => {
 
                 <div className="space-y-4">
                     <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Page not found</h2>
-                    <p className="text-zinc-500 text-lg max-w-md mx-auto leading-relaxed">
+                    <p className="text-muted-foreground text-lg max-w-md mx-auto leading-relaxed">
                         The story you're looking for has been moved or doesn't exist. Let's get you back to the main stage.
                     </p>
                 </div>
 
                 <div className="pt-8">
                     <Link to="/">
-                        <button className="px-10 py-4 bg-white text-black rounded-2xl font-bold hover:bg-zinc-200 transition-all transform hover:scale-105 shadow-xl shadow-white/5">
+                        <button className="px-10 py-4 bg-primary text-primary-foreground rounded-2xl font-bold hover:bg-primary/90 transition-all transform hover:scale-105 shadow-xl shadow-primary/10">
                             Back to Home
                         </button>
                     </Link>
